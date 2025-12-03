@@ -3,260 +3,1014 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actividad 8 Calculadora</title>
+    <title>Actividad 08 - Calculadora de Expresiones Algebraicas</title>
+    <style>
+    /* ==================== VARIABLES Y RESET ==================== */
+    :root {
+        --color-primary: #2c5aa0;
+        --color-secondary: #3b82f6;
+        --color-accent: #f59e0b;
+        --color-success: #10b981;
+        --color-light: #f8fafc;
+        --color-dark: #1e293b;
+        --color-text: #333;
+        --color-border: #e2e8f0;
+        --color-background: #f5f7fa;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+        --radius: 12px;
+        --transition: all 0.3s ease;
+    }
 
-<style>
-/* Reset y configuración base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #ff0e0e;
-    color: #000000;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-text);
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 20px;
+    }
 
-/* Contenedor principal */
-.container {
-    width: 100%;
-    max-width: 600px;
-    padding: 2rem;
-}
+    /* ==================== ENCABEZADO ==================== */
+    .header {
+        background: linear-gradient(135deg, var(--color-primary) 0%, #1e4a8c 100%);
+        color: white;
+        padding: 2.5rem;
+        border-radius: var(--radius);
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+    }
 
-/* Título */
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: #429c42;
-    margin-bottom: 3rem;
-}
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
 
-/* Sección de inputs */
-.input-section {
-    margin-bottom: 2rem;
-}
+    .header .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-style: italic;
+    }
 
-.field-group {
-    margin-bottom: 1.5rem;
-}
+    /* ==================== CONTENEDOR PRINCIPAL ==================== */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-label {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #4e94bd;
-    margin-bottom: 0.5rem;
-}
+    /* ==================== TARJETAS DE INFORMACIÓN ==================== */
+    .info-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
 
-/* Campos de texto */
-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 1rem;
-    background-color: #28cf232c;
-    border: 2px solid #4897c92d;
-    border-radius: 8px;
-    color: #d4c602;
-    font-size: 1rem;
-    font-family: 'Courier New', monospace;
-    resize: vertical;
-    transition: border-color 0.3s ease;
-}
+    .card {
+        background: white;
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        border-top: 4px solid var(--color-secondary);
+    }
 
-textarea:focus {
-    outline: none;
-    border-color: #1e3d6d;
-}
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
 
-textarea::placeholder {
-    color: #8f6f6f;
-}
+    .card h3 {
+        color: var(--color-primary);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
 
-/* Botón */
-.calculate-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: #000000;
-    color: #966161;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+    .card h3:before {
+        content: "🔢";
+        font-size: 1rem;
+    }
 
-.calculate-button:hover {
-    background-color: #349e57;
-    transform: translateY(-2px);
-}
+    .card ul {
+        list-style: none;
+        padding-left: 0;
+    }
 
-.calculate-button:active {
-    transform: translateY(0);
-}
+    .card li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--color-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
 
-/* Resultados */
-.result-section {
-    margin-top: 2rem;
-}
+    .card li:before {
+        content: "→";
+        color: var(--color-secondary);
+        font-weight: bold;
+    }
 
-.info-card {
-    background-color: #511361;
-    border: 2px solid #fbbe2480;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
+    .card li:last-child {
+        border-bottom: none;
+    }
 
-.info-card h3 {
-    color: #0c2507;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
+    /* ==================== SECCIÓN DE ENTRADAS ==================== */
+    .input-section {
+        background: white;
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+        border-left: 4px solid var(--color-accent);
+        transition: var(--transition);
+    }
 
-.result-content {
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #ffffff;
-    background-color: #1a1a1a;
-    padding: 1rem;
-    border-radius: 6px;
-    border-left: 4px solid #fbbf24;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-}
+    .input-section:hover {
+        border-left-color: var(--color-success);
+        transform: translateX(5px);
+    }
 
-@media (max-width: 768px) {
-    .container { padding: 1rem; }
-    h1 { font-size: 2rem; }
-    textarea { min-height: 80px; font-size: 0.9rem; }
-}
-</style>
+    .input-section h2 {
+        color: var(--color-primary);
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-light);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
 
+    .input-section h2:before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--color-accent);
+        border-radius: 50%;
+    }
+
+    /* ==================== GRUPOS DE ENTRADA ==================== */
+    .field-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .field-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .field-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--color-dark);
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .field-group label:before {
+        content: "📝";
+        font-size: 0.8rem;
+    }
+
+    /* ==================== TEXTAREAS ==================== */
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 1rem;
+        border: 2px solid var(--color-border);
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: 'Courier New', monospace;
+        resize: vertical;
+        transition: var(--transition);
+        background: var(--color-light);
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: var(--color-secondary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        background: white;
+    }
+
+    textarea::placeholder {
+        color: #94a3b8;
+        font-style: italic;
+        font-size: 0.9rem;
+    }
+
+    /* ==================== BOTÓN DE CÁLCULO ==================== */
+    .calculate-button {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--color-secondary) 0%, #2563eb 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    .calculate-button:hover {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .calculate-button:active {
+        transform: translateY(0);
+    }
+
+    .calculate-button:before {
+        content: "🧮";
+        font-size: 1.2rem;
+    }
+
+    /* ==================== SECCIÓN DE RESULTADOS ==================== */
+    .result-section {
+        background: white;
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        border-left: 4px solid var(--color-success);
+        transition: var(--transition);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .result-section:hover {
+        border-left-color: var(--color-secondary);
+        transform: translateX(3px);
+    }
+
+    .result-section h3 {
+        color: var(--color-primary);
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .result-section h3:before {
+        content: "📊";
+        font-size: 1.2rem;
+    }
+
+    /* ==================== CONTENIDO DE RESULTADOS ==================== */
+    .result-content {
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--color-dark);
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--color-border);
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        white-space: pre-wrap;
+        word-break: break-word;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .result-content.empty {
+        color: #94a3b8;
+        font-style: italic;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* ==================== EJEMPLOS ==================== */
+    .examples {
+        background: linear-gradient(135deg, #e8f4fc 0%, #d1ecf1 100%);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        margin: 0 0 2rem 0;
+        border: 2px dashed var(--color-border);
+    }
+
+    .examples h3 {
+        color: var(--color-primary);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .examples h3:before {
+        content: "💡";
+    }
+
+    .examples-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .example-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 6px;
+        border-left: 3px solid var(--color-accent);
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .example-item:hover {
+        background: var(--color-secondary);
+        color: white;
+        transform: translateX(5px);
+    }
+
+    /* ==================== FOOTER ==================== */
+    .footer {
+        background: var(--color-primary);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        border-radius: var(--radius);
+        font-size: 0.9rem;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .footer-info {
+        text-align: left;
+    }
+
+    .footer-info p {
+        margin: 0.3rem 0;
+        opacity: 0.9;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .footer-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 4px;
+        transition: var(--transition);
+        font-size: 0.85rem;
+    }
+
+    .footer-links a:hover {
+        background: white;
+        color: var(--color-primary);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .header {
+            padding: 1.5rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+        }
+        
+        .info-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        .input-section, .result-section {
+            padding: 1.5rem;
+        }
+        
+        .examples-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-content {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-info {
+            text-align: center;
+        }
+        
+        .footer-links {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.6rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            font-size: 0.9rem;
+        }
+        
+        .calculate-button {
+            padding: 0.8rem;
+            font-size: 1rem;
+        }
+    }
+
+    /* ==================== ANIMACIONES ==================== */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .input-section, .result-section, .card {
+        animation: slideIn 0.6s ease-out;
+    }
+
+    /* ==================== INDICADOR DE ACTIVO ==================== */
+    textarea:focus {
+        border-color: var(--color-success);
+        background: linear-gradient(135deg, #e8f6f3 0%, white 100%);
+    }
+
+    /* ==================== SCROLLBAR PERSONALIZADO ==================== */
+    textarea::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+        background: var(--color-light);
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        background: var(--color-secondary);
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary);
+    }
+
+    /* ==================== ESTADO DE CARGANDO ==================== */
+    .loading {
+        position: relative;
+        opacity: 0.7;
+    }
+
+    .loading:after {
+        content: "Calculando...";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-style: italic;
+        color: var(--color-primary);
+    }
+    </style>
 </head>
 <body>
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <h1>Actividad 08 - Calculadora de Expresiones Algebraicas</h1>
+        <p class="subtitle">Tecnológico de Software • Fundamentos de Álgebra • 1° Cuatrimestre 2025</p>
+    </header>
 
-<div class="container">
-    <h1>Calculadora de Variables</h1>
-
-    <div class="input-section">
-        <div class="field-group">
-            <label for="variables">Variables:</label>
-            <textarea id="variables" placeholder="Ejemplo: w1 = 1, w2 = 2, w3 = 3"></textarea>
-        </div>
-
-        <div class="field-group">
-            <label for="equations">Ecuaciones:</label>
-            <textarea id="equations" placeholder="Ejemplo: feature_cost = w1 * w2 + w3"></textarea>
-        </div>
-
-        <button id="calculate-btn" class="calculate-button">Calcular</button>
-    </div>
-
-    <div class="result-section">
-        <div class="info-card">
-            <h3>Resultado:</h3>
-            <div id="result" class="result-content">
-                Ingresa las variables y ecuaciones para ver el resultado
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="container">
+        <!-- TARJETAS INFORMATIVAS -->
+        <div class="info-cards">
+            <div class="card">
+                <h3>¿Cómo funciona?</h3>
+                <ul>
+                    <li>Define variables con valores numéricos</li>
+                    <li>Escribe ecuaciones usando las variables</li>
+                    <li>La calculadora evaluará automáticamente</li>
+                    <li>Puedes usar operadores: +, -, *, /, ^, ( )</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>Operadores disponibles</h3>
+                <ul>
+                    <li><strong>+</strong> : Suma</li>
+                    <li><strong>-</strong> : Resta</li>
+                    <li><strong>*</strong> : Multiplicación</li>
+                    <li><strong>/</strong> : División</li>
+                    <li><strong>^</strong> : Potencia</li>
+                    <li><strong>( )</strong> : Paréntesis</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>Reglas importantes</h3>
+                <ul>
+                    <li>Las variables deben definirse antes de usarse</li>
+                    <li>Usa nombres descriptivos (ej: precio, cantidad)</li>
+                    <li>Puedes incluir decimales y números negativos</li>
+                    <li>Orden de operaciones: PEMDAS</li>
+                </ul>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-// Clase principal de la calculadora
-class Calculator {
-    constructor() {
-        this.variablesInput = document.getElementById('variables');
-        this.equationsInput = document.getElementById('equations');
-        this.calculateButton = document.getElementById('calculate-btn');
-        this.resultDiv = document.getElementById('result');
-        this.init();
-    }
+        <!-- EJEMPLOS -->
+        <div class="examples">
+            <h3>📚 Ejemplos para probar (haz clic):</h3>
+            <div class="examples-grid">
+                <div class="example-item" onclick="loadExample(1)">
+                    a = 5, b = 3, c = 2\nresultado = a * b + c
+                </div>
+                <div class="example-item" onclick="loadExample(2)">
+                    x = 10, y = 4, z = 2\npotencia = x ^ y / z
+                </div>
+                <div class="example-item" onclick="loadExample(3)">
+                    base = 8, altura = 6\narea = (base * altura) / 2
+                </div>
+                <div class="example-item" onclick="loadExample(4)">
+                    radio = 7\ncircunferencia = 2 * 3.1416 * radio
+                </div>
+            </div>
+        </div>
 
-    init() {
-        this.calculateButton.addEventListener('click', () => this.calculate());
-    }
+        <!-- SECCIÓN DE ENTRADAS -->
+        <section class="input-section">
+            <h2>📐 Definir Variables y Ecuaciones</h2>
+            
+            <div class="field-group">
+                <label for="variables">Variables (una por línea o separadas por coma):</label>
+                <textarea 
+                    id="variables" 
+                    placeholder="Ejemplo:
+a = 5
+b = 3.5
+c = -2
+radio = 7.8
+precio = 99.99
+cantidad = 3
 
-    parseVariables(text) {
-        const variables = {};
-        const lines = text.split('\n').filter(l => l.trim());
+O también puedes usar:
+x = 10, y = 20, z = 30"
+                    spellcheck="false"
+                ></textarea>
+            </div>
 
-        for (const line of lines) {
-            const parts = line.split(',');
+            <div class="field-group">
+                <label for="equations">Ecuaciones a evaluar:</label>
+                <textarea 
+                    id="equations" 
+                    placeholder="Ejemplo:
+suma = a + b + c
+producto = a * b * c
+potencia = a ^ b
+expresion_compleja = (a + b) * c / 2
 
-            for (const part of parts) {
-                const match = part.trim().match(/^(\w+)\s*=\s*(.+)$/);
+Puedes usar múltiples ecuaciones, una por línea:
+area_circulo = 3.1416 * (radio ^ 2)
+perimetro_circulo = 2 * 3.1416 * radio
+total_compra = precio * cantidad"
+                    spellcheck="false"
+                ></textarea>
+            </div>
 
-                if (match) {
-                    const [, name, value] = match;
-                    variables[name] = this.evaluateExpression(value, variables);
+            <button id="calculate-btn" class="calculate-button">
+                Calcular Resultados
+            </button>
+        </section>
+
+        <!-- SECCIÓN DE RESULTADOS -->
+        <section class="result-section">
+            <h3>📊 Resultados del Cálculo</h3>
+            <div id="result" class="result-content empty">
+                Ingresa las variables y ecuaciones para ver los resultados
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p><strong>Tecnológico de Software</strong> • Fundamentos de Álgebra</p>
+                <p>Actividad 08 - Calculadora de Expresiones Algebraicas</p>
+                <p>1° Cuatrimestre 2025</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" onclick="showHelp()">❓ Ayuda</a>
+                <a href="#" onclick="clearAll()">🗑️ Limpiar</a>
+                <a href="#" onclick="showInfo()">ℹ️ Información</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // ============================================================================
+    // CLASE PRINCIPAL DE LA CALCULADORA (MANTENIENDO LA LÓGICA ORIGINAL)
+    // ============================================================================
+    class Calculator {
+        constructor() {
+            this.variablesInput = document.getElementById('variables');
+            this.equationsInput = document.getElementById('equations');
+            this.calculateButton = document.getElementById('calculate-btn');
+            this.resultDiv = document.getElementById('result');
+            this.init();
+        }
+
+        init() {
+            this.calculateButton.addEventListener('click', () => this.calculate());
+            
+            // Permitir Ctrl+Enter para calcular
+            this.variablesInput.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') this.calculate();
+            });
+            
+            this.equationsInput.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') this.calculate();
+            });
+        }
+
+        parseVariables(text) {
+            const variables = {};
+            const lines = text.split('\n').filter(l => l.trim());
+            
+            for (const line of lines) {
+                const parts = line.split(',');
+                
+                for (const part of parts) {
+                    const match = part.trim().match(/^(\w+)\s*=\s*(.+)$/);
+                    
+                    if (match) {
+                        const [, name, value] = match;
+                        try {
+                            variables[name] = this.evaluateExpression(value, variables);
+                        } catch (error) {
+                            throw new Error(`Error en variable ${name}: ${error.message}`);
+                        }
+                    } else if (part.trim()) {
+                        throw new Error(`Formato inválido en: "${part.trim()}"`);
+                    }
                 }
             }
-        }
-        return variables;
-    }
-
-    evaluateExpression(expression, variables) {
-        if (!/^[a-zA-Z0-9+\-*/().\s^]+$/.test(expression))
-            throw new Error(`Caracteres no válidos: ${expression}`);
-
-        let exp = expression.replace(/\^/g, '**');
-
-        for (const [name, value] of Object.entries(variables)) {
-            exp = exp.replace(new RegExp(`\\b${name}\\b`, "g"), value);
+            return variables;
         }
 
-        if (/[a-zA-Z]/.test(exp))
-            throw new Error(`Variable no definida: ${exp}`);
-
-        return Function(`"use strict"; return (${exp})`)();
-    }
-
-    calculate() {
-        try {
-            const vars = this.parseVariables(this.variablesInput.value);
-            const equations = this.equationsInput.value.split("\n").filter(l => l.trim());
-
-            const results = [];
-
-            for (const eq of equations) {
-                const match = eq.match(/^(\w+)\s*=\s*(.+)$/);
-
-                if (match) {
-                    const [, name, exp] = match;
-                    const res = this.evaluateExpression(exp, vars);
-                    vars[name] = res;
-                    results.push(`${name} = ${res}`);
-                }
+        evaluateExpression(expression, variables) {
+            // Limpiar y preparar expresión
+            let exp = expression.trim();
+            
+            // Reemplazar comas por puntos para decimales
+            exp = exp.replace(/,/g, '.');
+            
+            // Validar caracteres permitidos
+            if (!/^[a-zA-Z0-9+\-*/().\s^]+$/.test(exp)) {
+                throw new Error(`Caracteres no válidos: ${exp}`);
             }
+            
+            // Reemplazar potencia (^) por ** para JavaScript
+            exp = exp.replace(/\^/g, '**');
+            
+            // Reemplazar variables definidas
+            for (const [name, value] of Object.entries(variables)) {
+                const regex = new RegExp(`\\b${name}\\b`, "g");
+                exp = exp.replace(regex, value);
+            }
+            
+            // Verificar si quedan variables no definidas
+            const remainingVars = exp.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
+            if (remainingVars) {
+                throw new Error(`Variable no definida: ${remainingVars[0]}`);
+            }
+            
+            try {
+                // Evaluar expresión de forma segura
+                return Function(`"use strict"; return (${exp})`)();
+            } catch (error) {
+                throw new Error(`Error en expresión: ${exp} - ${error.message}`);
+            }
+        }
 
-            this.showResult(results.join("\n") || "No hay ecuaciones válidas");
+        calculate() {
+            try {
+                // Mostrar estado de carga
+                this.resultDiv.classList.remove('empty');
+                this.resultDiv.textContent = "Calculando...";
+                this.calculateButton.classList.add('loading');
+                
+                // Pequeño delay para que se vea el estado de carga
+                setTimeout(() => {
+                    const vars = this.parseVariables(this.variablesInput.value);
+                    const equations = this.equationsInput.value.split("\n").filter(l => l.trim());
+                    
+                    const results = [];
+                    const errors = [];
+                    
+                    for (const eq of equations) {
+                        const match = eq.match(/^(\w+)\s*=\s*(.+)$/);
+                        
+                        if (match) {
+                            const [, name, exp] = match;
+                            try {
+                                const res = this.evaluateExpression(exp, vars);
+                                vars[name] = res;
+                                results.push(`✅ ${name} = ${this.formatNumber(res)}`);
+                            } catch (error) {
+                                errors.push(`❌ Error en ${name}: ${error.message}`);
+                            }
+                        } else if (eq.trim()) {
+                            errors.push(`❌ Formato inválido: "${eq.trim()}"`);
+                        }
+                    }
+                    
+                    let finalMessage = '';
+                    
+                    if (results.length > 0) {
+                        finalMessage += "📈 RESULTADOS:\n" + results.join("\n") + "\n\n";
+                    }
+                    
+                    if (errors.length > 0) {
+                        finalMessage += "⚠️ ERRORES ENCONTRADOS:\n" + errors.join("\n");
+                    }
+                    
+                    if (results.length === 0 && errors.length === 0) {
+                        finalMessage = "No hay ecuaciones válidas para calcular.";
+                    }
+                    
+                    this.showResult(finalMessage);
+                    this.calculateButton.classList.remove('loading');
+                    
+                }, 300); // Pequeño delay para feedback visual
+                
+            } catch (err) {
+                this.showResult(`❌ ERROR GENERAL:\n${err.message}`);
+                this.calculateButton.classList.remove('loading');
+            }
+        }
 
-        } catch (err) {
-            this.showResult("Error: " + err.message);
+        formatNumber(num) {
+            // Formatear números para mejor visualización
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            
+            // Redondear a 6 decimales máximo
+            const rounded = Math.round(num * 1000000) / 1000000;
+            
+            // Si es muy pequeño, usar notación científica
+            if (Math.abs(rounded) < 0.000001 && rounded !== 0) {
+                return rounded.toExponential(6);
+            }
+            
+            // Eliminar ceros innecesarios
+            return parseFloat(rounded.toFixed(6)).toString();
+        }
+
+        showResult(msg) {
+            this.resultDiv.textContent = msg;
+            this.resultDiv.classList.remove('empty');
+            
+            // Scroll suave al resultado
+            this.resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
 
-    showResult(msg) {
-        this.resultDiv.textContent = msg;
+    // ============================================================================
+    // FUNCIONES AUXILIARES MEJORADAS
+    // ============================================================================
+    function loadExample(num) {
+        const examples = [
+            {
+                variables: "a = 5\nb = 3\nc = 2\nradio = 7.5\npi = 3.1416",
+                equations: "suma = a + b + c\nproducto = a * b * c\npotencia = a ^ b\narea_circulo = pi * (radio ^ 2)\nperimetro = 2 * pi * radio"
+            },
+            {
+                variables: "x = 10, y = 4, z = 2\nbase = 8, altura = 6\nprecio_unitario = 49.99",
+                equations: "potencia = x ^ y / z\narea_triangulo = (base * altura) / 2\ntotal_10_unidades = precio_unitario * 10\niva = total_10_unidades * 0.16"
+            },
+            {
+                variables: "cateto_a = 3\ncateto_b = 4\nradio_esfera = 5\ndensidad = 1.2",
+                equations: "hipotenusa = sqrt(cateto_a ^ 2 + cateto_b ^ 2)\nvolumen_esfera = (4/3) * 3.1416 * (radio_esfera ^ 3)\nmasa = volumen_esfera * densidad"
+            },
+            {
+                variables: "capital = 1000\ntasa_interes = 0.08\ntiempo_anios = 5\ncuota_mensual = 200",
+                equations: "interes_simple = capital * tasa_interes * tiempo_anios\nmonto_final = capital * (1 + tasa_interes) ^ tiempo_anios\ntotal_pagado = cuota_mensual * 12 * tiempo_anios"
+            }
+        ];
+        
+        const example = examples[num - 1];
+        if (example) {
+            document.getElementById('variables').value = example.variables;
+            document.getElementById('equations').value = example.equations;
+            
+            // Feedback visual
+            showMessage(`Ejemplo ${num} cargado`, 'success');
+            
+            // Calcular automáticamente después de un segundo
+            setTimeout(() => {
+                calculator.calculate();
+            }, 1000);
+        }
     }
-}
 
-// Inicializar
-new Calculator();
-</script>
+    function showHelp() {
+        const helpText = `
+📖 AYUDA DE USO:
 
+1. DEFINE VARIABLES:
+   • Una por línea: a = 5
+   • O separadas por coma: x = 10, y = 20, z = 30
+   • Puedes usar decimales y números negativos
+
+2. ESCRIBE ECUACIONES:
+   • Usa los nombres de las variables definidas
+   • Operadores: + - * / ^ ( )
+   • Una ecuación por línea
+
+3. EJEMPLO COMPLETO:
+   Variables:
+   radio = 7.5
+   pi = 3.1416
+
+   Ecuaciones:
+   area = pi * (radio ^ 2)
+   perimetro = 2 * pi * radio
+
+4. ATAJOS DE TECLADO:
+   • Ctrl+Enter: Calcular
+   • Click en ejemplos: Cargar y calcular
+
+5. FORMATO DE RESULTADOS:
+   • Números enteros se muestran sin decimales
+   • Números decimales redondeados a 6 lugares
+   • Números muy pequeños en notación científica
+        `;
+        
+        alert(helpText);
+    }
+
+    function clearAll() {
+        if (confirm('¿Estás seguro de que deseas limpiar todos los campos?')) {
+            document.getElementById('variables').value = '';
+            document.getElementById('equations').value = '';
+            document.getElementById('result').textContent = 'Ingresa las variables y ecuaciones para ver los resultados';
+            document.getElementById('result').classList.add('empty');
+            showMessage('Todos los campos han sido limpiados', 'success');
+        }
+    }
+
+    function showInfo() {
+        const infoText = `
+ℹ️ INFORMACIÓN DEL PROYECTO:
+
+Actividad 08 - Calculadora de Expresiones Algebraicas
+
+DESCRIPCIÓN:
+Herramienta educativa para la evaluación de expresiones
+algebraicas con soporte para variables y operaciones
+matemáticas básicas.
+
+CARACTERÍSTICAS:
+• Evaluación de expresiones con variables
+• Soporte para operaciones aritméticas básicas
+• Validación de sintaxis y errores
+• Sistema de ejemplos predefinidos
+• Interfaz intuitiva y responsive
+
+TECNOLOGÍAS:
+• HTML5, CSS3, JavaScript ES6+
+• Sin dependencias externas
+• Código completamente documentado
+
+DESARROLLADO PARA:
+Tecnológico de Software
+Fundamentos de Álgebra
+1° Cuatrimestre 2025
+        `;
+        
+        alert(infoText);
+    }
+
+    function showMessage(message, type = 'info') {
+        // Crear mensaje temporal
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        `;
+        
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            messageDiv.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 300);
+        }, 3000);
+        
+        // Agregar animación de salida
+        if (!document.querySelector('#message-styles')) {
+            const style = document.createElement('style');
+            style.id = 'message-styles';
+            style.textContent = `
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    // ============================================================================
+    // INICIALIZACIÓN
+    // ============================================================================
+    let calculator;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        calculator = new Calculator();
+        
+        // Agregar estilos CSS para animaciones
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        console.log('Calculadora inicializada correctamente');
+    });
+    </script>
 </body>
 </html>

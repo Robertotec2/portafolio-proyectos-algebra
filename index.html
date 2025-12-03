@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portafolio de Evidencias - Álgebra Lineal</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -13,25 +16,93 @@
     <p>Unidad III – Álgebra Lineal</p>
   </header>
 
-  <main>
-    <h2>Actividades del Proyecto</h2>
-    <p>Selecciona una actividad para visualizar su demostración, animación o calculadora correspondiente.</p>
+  <main class="container">
+    <div class="header-content">
+      <h2>Actividades del Proyecto</h2>
+      <p>Selecciona una actividad para visualizar su demostración, animación o calculadora correspondiente.</p>
+    </div>
 
     <nav class="grid">
-      <a class="card" href="actividad02/actividad02.html">Actividad 02 — Propiedades de los números complejos</a>
-      <a class="card" href="actividad04/actividad04.html">Actividad 04 — Conversión de forma polar a exponencial</a>
-      <a class="card" href="actividad06/actividad06.html">Actividad 06 — Demostraciones de expresiones algebraicas</a>
-      <a class="card" href="actividad08/actividad08.html">Actividad 08 — Calculadora de operaciones algebraicas</a>
-      <a class="card" href="actividad10/actividad10.html">Actividad 10 — Animaciones de productos notables</a>
-      <a class="card" href="actividad12/actividad12.html">Actividad 12 — Animaciones de factorización</a>
-      <a class="card" href="actividad14/actividad14.html">Actividad 14 — Calculadora de ecuaciones de 1er grado</a>
+      <a class="card" href="actividad02/actividad02.html">
+        <div class="card-icon">🔢</div>
+        <div class="card-content">
+          <h3>Actividad 02</h3>
+          <p>Propiedades de los números complejos</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad04/actividad04.html">
+        <div class="card-icon">📐</div>
+        <div class="card-content">
+          <h3>Actividad 04</h3>
+          <p>Conversión de forma polar a exponencial</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad06/actividad06.html">
+        <div class="card-icon">🧮</div>
+        <div class="card-content">
+          <h3>Actividad 06</h3>
+          <p>Demostraciones de expresiones algebraicas</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad08/actividad08.html">
+        <div class="card-icon">⚡</div>
+        <div class="card-content">
+          <h3>Actividad 08</h3>
+          <p>Calculadora de operaciones algebraicas</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad10/actividad10.html">
+        <div class="card-icon">🎬</div>
+        <div class="card-content">
+          <h3>Actividad 10</h3>
+          <p>Animaciones de productos notables</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad12/actividad12.html">
+        <div class="card-icon">📊</div>
+        <div class="card-content">
+          <h3>Actividad 12</h3>
+          <p>Animaciones de factorización</p>
+        </div>
+      </a>
+      
+      <a class="card" href="actividad14/actividad14.html">
+        <div class="card-icon">🔍</div>
+        <div class="card-content">
+          <h3>Actividad 14</h3>
+          <p>Calculadora de ecuaciones de 1er grado</p>
+        </div>
+      </a>
     </nav>
   </main>
 
-  <footer>
-    <p>Desarrollado por: <strong>Tu Nombre</strong></p>
-    <p>Fecha de entrega: 2 de diciembre</p>
-  </footer>
+<!-- PIE DE PÁGINA EDUCATIVO -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-info">
+            <p>
+                &copy; <span id="currentYear">2025</span> <strong>M. en C. Jorge J. Pedrozo Romero</strong> • 
+                <strong>Tecnológico de Software</strong>
+            </p>
+            <p>
+                <strong>Fundamentos de Álgebra</strong> • 1° Cuatrimestre 2025
+            </p>
+        </div>
+        <div class="footer-links">
+            <a href="mailto:ejemplo@tecnologico.edu.mx" aria-label="Enviar correo al profesor" id="contactLink">
+                Contacto
+            </a>
+            <a href="../index.html" aria-label="Volver al portafolio principal" id="portfolioLink">
+                Volver al Portafolio
+            </a>
+        </div>
+    </div>
+</footer>
 
   <script src="js/main.js"></script>
 </body>

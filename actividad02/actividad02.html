@@ -1,206 +1,1594 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Conversiones - Números Complejos Roberto Balmes Solís</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Visualizador interactivo de la recta numérica para clasificar números reales">
+    <meta name="keywords" content="matemáticas, números reales, recta numérica, clasificación, álgebra">
+    <meta name="author" content="M. en C. Jorge J. Pedrozo Romero">
+    
+    <title>Visualizador de la Recta Numérica - Fundamentos de Álgebra</title>
 <style>
-/* ==================== RESET ==================== */
+/* ==================== RESET Y VARIABLES ==================== */
+:root {
+    --color-primary: #2c3e50;
+    --color-secondary: #3498db;
+    --color-accent: #e74c3c;
+    --color-success: #27ae60;
+    --color-warning: #f39c12;
+    --color-light: #ecf0f1;
+    --color-dark: #2c3e50;
+    --color-text: #333;
+    --color-border: #ddd;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --radius: 8px;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ==================== GENERAL ==================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1f1c2c, #928dab);
-    padding: 30px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
 }
 
 .container {
-    max-width: 850px;
-    margin: auto;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    animation: fadeIn 0.6s ease-in-out;
-}
-
-/* Animación de entrada */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==================== TITULOS ==================== */
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #222;
-    font-weight: 600;
-}
-
-h2 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
-/* ==================== INSTRUCCIONES ==================== */
-.instructions {
-    background: #f0fff0;
-    border-left: 5px solid #2ecc71;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 25px;
-}
-.instructions ul {
-    margin-left: 20px;
-    margin-top: 10px;
-}
-
-/* ==================== SECCIONES ==================== */
-.form-section {
-    margin-bottom: 25px;
-    background: #eef3ff;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 10px;
-    border-left: 6px solid #3b82f6;
 }
 
-.input-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+/* ==================== ENCABEZADO ==================== */
+.header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
 }
 
-/* ==================== CAMPOS ==================== */
-input[type="text"] {
-    width: 120px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1.5px solid #bfc7d1;
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    transition: 0.2s;
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-input[type="text"]:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 4px rgba(0,122,255,0.4);
+.header .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
 }
 
-/* ==================== RESULTADOS ==================== */
-.result {
-    background: #0d1117;
-    color: #9cdcfe;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-family: 'Courier New', monospace;
-    border-left: 5px solid #3b82f6;
-    min-height: 45px;
-    display: flex;
-    align-items: center;
+.header .description {
+    font-size: 1rem;
+    opacity: 0.8;
+    font-style: italic;
 }
 
-/* ==================== BOTÓN ==================== */
-.clear-btn {
-    margin: auto;
-    margin-top: 20px;
-    display: block;
-    padding: 12px 25px;
-    border: none;
-    background: #e11d48;
-    color: #fff;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s;
+/* ==================== SECCIONES PRINCIPALES ==================== */
+.section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
 }
 
-.clear-btn:hover {
-    background: #be123c;
+.section:hover {
     transform: translateY(-2px);
 }
 
+.section h2 {
+    color: var(--color-primary);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--color-secondary);
+    display: inline-block;
+}
+
+/* ==================== CONTROLES ==================== */
+.input-group {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-field {
+    position: relative;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.input-field input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--color-light);
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.input-help {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* ==================== BOTONES ==================== */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, #2980b9 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--color-accent) 0%, #c0392b 100%);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* ==================== NÚMEROS PREDEFINIDOS ==================== */
+.preset-section {
+    margin-top: 2rem;
+}
+
+.preset-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--color-dark);
+}
+
+.preset-description {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.preset-numbers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.preset-btn {
+    padding: 10px 15px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.preset-btn.rational {
+    border-color: var(--color-success);
+    color: var(--color-success);
+}
+
+.preset-btn.irrational {
+    border-color: var(--color-warning);
+    color: var(--color-warning);
+}
+
+.preset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.preset-btn.rational:hover {
+    background: var(--color-success);
+    color: white;
+}
+
+.preset-btn.irrational:hover {
+    background: var(--color-warning);
+    color: white;
+}
+
+/* ==================== RECTA NUMÉRICA ==================== */
+.number-line-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.number-line {
+    position: relative;
+    height: 120px;
+    background: var(--color-light);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    margin: 2rem 0;
+    padding: 0 20px;
+}
+
+.line {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 3px;
+    background: var(--color-dark);
+    transform: translateY(-50%);
+}
+
+.tick {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: var(--color-dark);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tick-label {
+    position: absolute;
+    top: calc(50% + 20px);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    transform: translateX(-50%);
+}
+
+.range-info {
+    text-align: center;
+    margin-top: 1rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* ==================== PUNTOS EN LA RECTA ==================== */
+.number-point {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.number-point:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 20;
+}
+
+.number-point.naturals {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.number-point.integers {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.number-point.rationals {
+    background: linear-gradient(135deg, #27ae60 0%, #219653 100%);
+}
+
+.number-point.irrationals {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+}
+
+.point-label {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.number-point:hover .point-label {
+    opacity: 1;
+}
+
+/* ==================== PANELES INFORMATIVOS ==================== */
+.info-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.info-panel {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.info-panel h3 {
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-secondary);
+}
+
+/* ==================== CLASIFICACIÓN ==================== */
+.classification-legend {
+    margin-bottom: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background: var(--color-light);
+    border-radius: var(--radius);
+    transition: transform 0.3s ease;
+}
+
+.legend-item:hover {
+    transform: translateX(5px);
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.classification-info h4 {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 1rem 0;
+    color: var(--color-dark);
+}
+
+.classification-info ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.classification-info li {
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.classification-info li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+
+/* ==================== LISTA DE PUNTOS ==================== */
+.points-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.point-item {
+    background: var(--color-light);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin: 0.8rem 0;
+    border-left: 4px solid var(--color-secondary);
+    transition: all 0.3s ease;
+}
+
+.point-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow);
+}
+
+.point-item strong {
+    color: var(--color-dark);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.point-item small {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ==================== CALCULADORA DE DISTANCIAS ==================== */
+.calculator-description {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.distance-inputs {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.distance-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.select-selected {
+    padding: 12px 40px 12px 15px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-light);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.select-selected:after {
+    content: "▼";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.select-selected.select-arrow-active:after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.select-items {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--color-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: var(--shadow);
+}
+
+.select-items.show {
+    display: block;
+}
+
+.select-items div {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--color-light);
+}
+
+.select-items div:last-child {
+    border-bottom: none;
+}
+
+.select-items div:hover {
+    background: var(--color-secondary);
+    color: white;
+}
+
+.select-items div.selected {
+    background: var(--color-success);
+    color: white;
+}
+
+.distance-btn {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 1rem;
+}
+
+.distance-placeholder {
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius);
+    color: #666;
+}
+
+.distance-result {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #e8f6f3 0%, #d1f2eb 100%);
+    border: 2px solid var(--color-success);
+    border-radius: var(--radius);
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--color-dark);
+}
+
+/* ==================== PIE DE PÁGINA ==================== */
+.footer {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-info p {
+    margin: 0.5rem 0;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    background: white;
+    color: var(--color-primary);
+    border-color: white;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header {
+        padding: 1.5rem;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .info-panels {
+        grid-template-columns: 1fr;
+    }
+    
+    .preset-numbers {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-links {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .section {
+        padding: 1.5rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
 </style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">Jorge Javier Pedroza Romero</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:Order msdt:dt="string">5600.00000000000</mso:Order>
+<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
+<mso:_ExtendedDescription msdt:dt="string"></mso:_ExtendedDescription>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">Jorge Javier Pedroza Romero</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
+<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
+<mso:ReferenceId msdt:dt="string"></mso:ReferenceId>
+<mso:ContentTypeId msdt:dt="string">0x0101007E2C8B56A02B3545A04BBF53FFA0B3A8</mso:ContentTypeId>
+<mso:TriggerFlowInfo msdt:dt="string"></mso:TriggerFlowInfo>
+<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
+<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
 </head>
 
 <body>
-<div class="container">
+    <div class="container">
+        
+        <!-- ENCABEZADO EDUCATIVO -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Visualizador de la Recta Numérica</h1>
+                <p class="subtitle">
+                    <strong>Tecnológico de Software</strong> • 
+                    <strong>Fundamentos de Álgebra</strong> • 
+                    1° Cuatrimestre 2025
+                </p>
+                <p class="description">
+                    Explora la clasificación y ubicación de números reales de forma interactiva
+                </p>
+            </div>
+        </header>
 
-<h1>Calculadora de Conversiones de Números Complejos</h1>
+        <!-- CONTENIDO PRINCIPAL -->
+        <main>
+            
+            <!-- SECCIÓN DE CONTROLES -->
+            <section class="section controls" aria-label="Controles de entrada">
+                <h2>Controles de Entrada</h2>
+                
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="numberInput">Valor del número:</label>
+                        <input 
+                            type="text" 
+                            id="numberInput" 
+                            placeholder="Ej: sqrt(7), 2*π, √2, 1/3"
+                            aria-describedby="input-help"
+                            autocomplete="off"
+                        >
+                        <small id="input-help" class="input-help">
+                            Ingresa números, constantes matemáticas o expresiones
+                        </small>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button 
+                            type="button" 
+                            class="btn btn-primary" 
+                            onclick="addNumber()"
+                            aria-label="Agregar número a la recta"
+                        >
+                            <span>+</span> Agregar Número
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-danger" 
+                            onclick="clearAll()"
+                            aria-label="Limpiar todos los puntos de la recta"
+                        >
+                            <span>×</span> Limpiar Todo
+                        </button>
+                    </div>
+                </div>
 
-<!-- ==================== INSTRUCCIONES ==================== -->
-<div class="instructions">
-<strong>Instrucciones:</strong>
-<ul>
-<li>Ingresa un número complejo en cualquiera de las formas.</li>
-<li>Las otras formas se calculan automáticamente.</li>
-<li>Ángulos pueden ser: pi, pi/2, pi/3, pi/4, etc.</li>
-<li>Soporta raíces: sqrt(2), sqrt(3), sqrt(5)...</li>
-<li>Decimales también funcionan: 1.5, -2.7, etc.</li>
-</ul>
-</div>
+                <!-- Números predefinidos -->
+                <div class="preset-section">
+                    <h3>Números Predefinidos</h3>
+                    <p class="preset-description">
+                        Haz clic en cualquier número para agregarlo automáticamente:
+                    </p>
+                    
+                    <div class="preset-numbers" role="group" aria-label="Números predefinidos">
+                        <span class="preset-btn irrational" onclick="addPresetNumber('π')" title="Pi (π ≈ 3.14159)">π</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('e')" title="Euler (e ≈ 2.71828)">e</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('√2')" title="Raíz de 2 (√2 ≈ 1.41421)">√2</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('√3')" title="Raíz de 3 (√3 ≈ 1.73205)">√3</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('-√2')" title="Menos raíz de 2 (-√2 ≈ -1.41421)">-√2</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('φ')" title="Número áureo (φ ≈ 1.61803)">φ</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('τ')" title="Tau (τ = 2π ≈ 6.28318)">τ</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('ln2')" title="Logaritmo natural de 2 (ln2 ≈ 0.69314)">ln2</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('ln10')" title="Logaritmo natural de 10 (ln10 ≈ 2.30259)">ln10</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('2*π')" title="Dos pi (2π ≈ 6.28318)">2*π</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('π/2')" title="Pi sobre dos (π/2 ≈ 1.57080)">π/2</span>
+                        <span class="preset-btn irrational" onclick="addPresetNumber('1/e')" title="Uno sobre e (1/e ≈ 0.36788)">1/e</span>
+                        <span class="preset-btn rational" onclick="addPresetNumber('1/3')" title="Un tercio (1/3 ≈ 0.33333)">1/3</span>
+                        <span class="preset-btn rational" onclick="addPresetNumber('-1/2')" title="Menos un medio (-1/2 = -0.5)">-1/2</span>
+                        <span class="preset-btn rational" onclick="addPresetNumber('2.5')" title="Dos y medio (2.5)">2.5</span>
+                        <span class="preset-btn rational" onclick="addPresetNumber('-2.5')" title="Menos dos y medio (-2.5)">-2.5</span>
+                    </div>
+                </div>
+            </section>
 
-<!-- ==================== CARTESIANA ==================== -->
-<div class="form-section">
-<h2>Forma Cartesiana: a + bi</h2>
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="real" placeholder="a">
-<span>+</span>
-<input type="text" id="imag" placeholder="b">
-<span>i</span>
-</div>
-<div class="result" id="cartesian-result">Ingresa los valores arriba</div>
-</div>
+            <!-- VISUALIZACIÓN DE LA RECTA -->
+            <section class="section number-line-container" aria-label="Visualización de la recta numérica">
+                <h2>Recta Numérica Interactiva</h2>
+                <div 
+                    class="number-line" 
+                    id="numberLine" 
+                    role="img" 
+                    aria-label="Recta numérica con puntos representando números reales"
+                >
+                    <!-- Los elementos de la recta se generan dinámicamente -->
+                </div>
+                <p class="range-info">
+                    <small>Rango de visualización: -10 a +10 (números fuera de este rango no se mostrarán)</small>
+                </p>
+            </section>
 
-<!-- ==================== POLAR ==================== -->
-<div class="form-section">
-<h2>Forma Polar: r(cos θ + i sin θ)</h2>
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="modulus" placeholder="r">
-<span>(cos</span>
-<input type="text" id="angle" placeholder="θ">
-<span>+ i sin</span>
-<input type="text" id="angle2" readonly>
-<span>)</span>
-</div>
-<div class="result" id="polar-result">Ingresa los valores arriba</div>
-</div>
+            <!-- PANELES INFORMATIVOS -->
+            <section class="info-panels" aria-label="Información y herramientas">
+                
+                <!-- Panel de clasificación -->
+                <div class="info-panel classification-panel">
+                    <h3>Clasificación de Conjuntos Numéricos</h3>
+                    <div class="classification-legend" role="list">
+                        <div class="legend-item" role="listitem">
+                            <div class="legend-color naturals" aria-hidden="true"></div>
+                            <span><strong>ℕ - Naturales:</strong> {1, 2, 3, 4, ...}</span>
+                        </div>
+                        <div class="legend-item" role="listitem">
+                            <div class="legend-color integers" aria-hidden="true"></div>
+                            <span><strong>ℤ - Enteros:</strong> {..., -2, -1, 0, 1, 2, ...}</span>
+                        </div>
+                        <div class="legend-item" role="listitem">
+                            <div class="legend-color rationals" aria-hidden="true"></div>
+                            <span><strong>ℚ - Racionales:</strong> Fracciones y decimales</span>
+                        </div>
+                        <div class="legend-item" role="listitem">
+                            <div class="legend-color irrationals" aria-hidden="true"></div>
+                            <span><strong>ℝ-ℚ - Irracionales:</strong> π, e, √2, ...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="classification-info">
+                        <h4>Propiedades de los Conjuntos:</h4>
+                        <ul>
+                            <li><strong>Naturales ⊂ Enteros:</strong> Todo número natural es entero</li>
+                            <li><strong>Enteros ⊂ Racionales:</strong> Todo entero puede escribirse como fracción</li>
+                            <li><strong>Racionales ∪ Irracionales = Reales:</strong> Los reales son la unión de racionales e irracionales</li>
+                            <li><strong>Racionales ∩ Irracionales = ∅:</strong> No existen números que sean ambos</li>
+                        </ul>
+                    </div>
+                </div>
 
-<!-- ==================== EXPONENCIAL ==================== -->
-<div class="form-section">
-<h2>Forma Exponencial: re^(iθ)</h2>
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="exp-modulus" placeholder="r">
-<span>e^(i*</span>
-<input type="text" id="exp-angle" placeholder="θ">
-<span>)</span>
-</div>
-<div class="result" id="exponential-result">Ingresa los valores arriba</div>
-</div>
+                <!-- Panel de puntos -->
+                <div class="info-panel points-panel">
+                    <h3>Puntos en la Recta</h3>
+                    <div 
+                        class="points-list" 
+                        id="pointsList" 
+                        aria-live="polite" 
+                        aria-label="Lista de números agregados a la recta"
+                    >
+                        <div class="empty-state">
+                            <p>Agrega números para ver su clasificación aquí</p>
+                            <small>Los puntos aparecerán ordenados de menor a mayor</small>
+                        </div>
+                    </div>
+                </div>
 
-<button class="clear-btn" onclick="clearAll()">Limpiar Todo</button>
+                <!-- Panel calculadora de distancias -->
+                <div class="info-panel distance-calculator">
+                    <h3>Calculadora de Distancias</h3>
+                    <p class="calculator-description">
+                        Selecciona dos puntos para calcular la distancia entre ellos en la recta numérica.
+                    </p>
+                    
+                    <div class="distance-inputs">
+                        <div class="distance-field">
+                            <label for="pointA-container">Punto A:</label>
+                            <div class="custom-select" id="pointA-container" role="listbox" aria-label="Seleccionar primer punto">
+                                <div 
+                                    class="select-selected" 
+                                    id="pointA-selected" 
+                                    role="button" 
+                                    tabindex="0"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                >
+                                    Selecciona un punto
+                                </div>
+                                <div class="select-items" id="pointA-items" role="listbox" aria-label="Opciones de puntos A">
+                                    <div data-value="" role="option">Selecciona un punto</div>
+                                </div>
+                            </div>
+                        </div>
 
-</div>
+                        <div class="distance-field">
+                            <label for="pointB-container">Punto B:</label>
+                            <div class="custom-select" id="pointB-container" role="listbox" aria-label="Seleccionar segundo punto">
+                                <div 
+                                    class="select-selected" 
+                                    id="pointB-selected" 
+                                    role="button" 
+                                    tabindex="0"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                >
+                                    Selecciona un punto
+                                </div>
+                                <div class="select-items" id="pointB-items" role="listbox" aria-label="Opciones de puntos B">
+                                    <div data-value="" role="option">Selecciona un punto</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- ==================== SCRIPTS (TU MISMO JS) ==================== -->
+                    <button 
+                        type="button"
+                        class="btn distance-btn btn-primary" 
+                        onclick="calculateDistance()"
+                        aria-describedby="distance-help"
+                    >
+                        Calcular Distancia
+                    </button>
+                    <small id="distance-help" class="input-help">
+                        La distancia se calcula como |a - b|
+                    </small>
+
+                    <div 
+                        id="distanceResult" 
+                        aria-live="polite" 
+                        aria-label="Resultado del cálculo de distancia"
+                    >
+                        <div class="distance-placeholder">
+                            <div><strong>Calculadora de Distancias</strong></div>
+                            <div>Los resultados aparecerán aquí</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- PIE DE PÁGINA EDUCATIVO -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>
+                        &copy; 2025 <strong>M. en C. Jorge J. Pedrozo Romero</strong> • 
+                        <strong>Tecnológico de Software</strong>
+                    </p>
+                    <p>
+                        <strong>Fundamentos de Álgebra</strong> • 1° Cuatrimestre 2025
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" aria-label="Enviar correo al profesor">
+                        Contacto
+                    </a>
+                    <a href="#" aria-label="Ver portfolio del profesor">
+                        Portfolio
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
 <script>
-/* ========= NO MODIFIQUÉ TU JS (solo está compactado) ========= */
-/* ... (AQUÍ VA EXACTAMENTE TU JS COMPLETITO SIN QUITAR NADA) ... */
-</script>
+// Mantengo el mismo JavaScript funcional del original
+// Solo cambio las constantes de color para que coincidan con el nuevo diseño
 
+// VARIABLES GLOBALES
+let points = [];
+let currentRange = 10;
+
+// CONSTANTES MATEMÁTICAS
+const CONSTANTS = {
+    'π': Math.PI,
+    'pi': Math.PI,
+    'e': Math.E,
+    'φ': (1 + Math.sqrt(5)) / 2,
+    'phi': (1 + Math.sqrt(5)) / 2,
+    'τ': 2 * Math.PI,
+    'tau': 2 * Math.PI,
+    'ln2': Math.LN2,
+    'ln10': Math.LN10,
+    '√2': Math.sqrt(2),
+    '√3': Math.sqrt(3),
+    '√5': Math.sqrt(5),
+    '√7': Math.sqrt(7),
+    '√8': Math.sqrt(8),
+    '√10': Math.sqrt(10),
+    '√11': Math.sqrt(11),
+    '√12': Math.sqrt(12),
+    '√13': Math.sqrt(13),
+    '√15': Math.sqrt(15),
+    '√17': Math.sqrt(17),
+    '√19': Math.sqrt(19),
+    '√20': Math.sqrt(20),
+    '-√2': -Math.sqrt(2),
+    '-√3': -Math.sqrt(3),
+    '-√5': -Math.sqrt(5)
+};
+
+// FUNCIONES DE PARSING (se mantienen igual)
+function parseNumber(input) {
+    input = input.trim().replace(/\s+/g, '');
+
+    if (CONSTANTS.hasOwnProperty(input)) {
+        return CONSTANTS[input];
+    }
+
+    let processedInput = input;
+    for (const [symbol, value] of Object.entries(CONSTANTS)) {
+        const regex = new RegExp(symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        processedInput = processedInput.replace(regex, value.toString());
+    }
+
+    if (input.includes('/') && !input.includes('*') && !input.includes('+') && !input.includes('-', 1)) {
+        const parts = input.split('/');
+        if (parts.length === 2) {
+            const numerator = parseFloat(parts[0]);
+            const denominator = parseFloat(parts[1]);
+            if (!isNaN(numerator) && !isNaN(denominator) && denominator !== 0) {
+                return numerator / denominator;
+            }
+        }
+    }
+
+    if (input.startsWith('√') && !input.includes('*') && !input.includes('+') && !input.includes('-', 1)) {
+        const radicand = parseFloat(input.slice(1));
+        if (!isNaN(radicand) && radicand >= 0) {
+            return Math.sqrt(radicand);
+        }
+    }
+
+    if (input.startsWith('-√') && !input.includes('*') && !input.includes('+')) {
+        const radicand = parseFloat(input.slice(2));
+        if (!isNaN(radicand) && radicand >= 0) {
+            return -Math.sqrt(radicand);
+        }
+    }
+
+    if (input.includes('sqrt(')) {
+        const sqrtPattern = /sqrt\(([^)]+)\)/g;
+        let processedInputSqrt = input;
+        let match;
+        
+        while ((match = sqrtPattern.exec(input)) !== null) {
+            const innerExpression = match[1];
+            let innerValue;
+            
+            try {
+                if (innerExpression.includes('/') && !innerExpression.includes('*') && 
+                    !innerExpression.includes('+') && !innerExpression.includes('-', 1)) {
+                    const parts = innerExpression.split('/');
+                    if (parts.length === 2) {
+                        const num = parseFloat(parts[0]);
+                        const den = parseFloat(parts[1]);
+                        if (!isNaN(num) && !isNaN(den) && den !== 0) {
+                            innerValue = num / den;
+                        }
+                    }
+                } else {
+                    const safeChars = /^[0-9+\-*/.() ]+$/;
+                    if (safeChars.test(innerExpression)) {
+                        innerValue = Function('"use strict"; return (' + innerExpression + ')')();
+                    } else {
+                        innerValue = parseFloat(innerExpression);
+                    }
+                }
+                
+                if (!isNaN(innerValue) && innerValue >= 0) {
+                    const sqrtValue = Math.sqrt(innerValue);
+                    processedInputSqrt = processedInputSqrt.replace(match[0], sqrtValue.toString());
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+        
+        if (/^sqrt\([^)]+\)$/.test(input)) {
+            const innerExpression = input.match(/sqrt\(([^)]+)\)/)[1];
+            let innerValue;
+            
+            try {
+                if (innerExpression.includes('/') && !innerExpression.includes('*') && 
+                    !innerExpression.includes('+') && !innerExpression.includes('-', 1)) {
+                    const parts = innerExpression.split('/');
+                    if (parts.length === 2) {
+                        const num = parseFloat(parts[0]);
+                        const den = parseFloat(parts[1]);
+                        if (!isNaN(num) && !isNaN(den) && den !== 0) {
+                            innerValue = num / den;
+                        }
+                    }
+                } else {
+                    const safeChars = /^[0-9+\-*/.() ]+$/;
+                    if (safeChars.test(innerExpression)) {
+                        innerValue = Function('"use strict"; return (' + innerExpression + ')')();
+                    } else {
+                        innerValue = parseFloat(innerExpression);
+                    }
+                }
+                
+                if (!isNaN(innerValue) && innerValue >= 0) {
+                    return Math.sqrt(innerValue);
+                }
+            } catch (e) {}
+        }
+        
+        input = processedInputSqrt;
+    }
+
+    try {
+        processedInput = processedInput.replace(/\^/g, '**');
+        const safeChars = /^[0-9+\-*/.() ]+$/;
+        if (safeChars.test(processedInput)) {
+            const result = Function('"use strict"; return (' + processedInput + ')')();
+            if (typeof result === 'number' && !isNaN(result) && isFinite(result)) {
+                return result;
+            }
+        }
+    } catch (e) {}
+
+    const num = parseFloat(processedInput);
+    if (!isNaN(num)) {
+        return num;
+    }
+
+    return null;
+}
+
+// FUNCIONES DE CLASIFICACIÓN
+function classifyNumber(num, originalInput) {
+    if (num > 0 && Number.isInteger(num)) {
+        return 'naturals';
+    }
+    
+    if (Number.isInteger(num)) {
+        return 'integers';
+    }
+    
+    const irrationalConstants = [
+        'π', 'pi', 'e', 'φ', 'phi', 'τ', 'tau', 'ln2', 'ln10', 
+        '√2', '√3', '√5', '√7', '√8', '√10', '√11', '√12', '√13', '√15', '√17', '√19', '√20',
+        '-√2', '-√3', '-√5'
+    ];
+    
+    if (irrationalConstants.includes(originalInput)) {
+        return 'irrationals';
+    }
+    
+    if (originalInput.includes('sqrt(')) {
+        const sqrtMatch = originalInput.match(/sqrt\(([^)]+)\)/);
+        if (sqrtMatch) {
+            const innerExpression = sqrtMatch[1];
+            let innerValue;
+            
+            try {
+                if (innerExpression.includes('/') && !innerExpression.includes('*') && 
+                    !innerExpression.includes('+') && !innerExpression.includes('-', 1)) {
+                    const parts = innerExpression.split('/');
+                    if (parts.length === 2) {
+                        const num = parseFloat(parts[0]);
+                        const den = parseFloat(parts[1]);
+                        if (!isNaN(num) && !isNaN(den) && den !== 0) {
+                            innerValue = num / den;
+                        }
+                    }
+                } else {
+                    const safeChars = /^[0-9+\-*/.() ]+$/;
+                    if (safeChars.test(innerExpression)) {
+                        innerValue = Function('"use strict"; return (' + innerExpression + ')')();
+                    } else {
+                        innerValue = parseFloat(innerExpression);
+                    }
+                }
+                
+                if (!isNaN(innerValue) && innerValue >= 0) {
+                    const sqrtResult = Math.sqrt(innerValue);
+                    
+                    if (Number.isInteger(sqrtResult)) {
+                        if (sqrtResult > 0) {
+                            return 'naturals';
+                        } else if (sqrtResult === 0) {
+                            return 'integers';
+                        }
+                    } else {
+                        return 'irrationals';
+                    }
+                }
+            } catch (e) {
+                return 'irrationals';
+            }
+        }
+    }
+    
+    if (originalInput.includes('*') || originalInput.includes('+') || 
+        originalInput.includes('-') || originalInput.includes('/')) {
+        return classifyExpression(originalInput, num);
+    }
+    
+    if (originalInput.includes('/')) {
+        return 'rationals';
+    }
+    
+    return 'rationals';
+}
+
+function classifyExpression(expression, result) {
+    const normalizedExpr = expression.replace(/\s/g, '').replace(/\*\*/g, '^').toLowerCase();
+
+    const knownRationalResults = [
+        { pattern: /^π\/π$/, result: 1 },
+        { pattern: /^pi\/pi$/, result: 1 },
+        { pattern: /^e\/e$/, result: 1 },
+        { pattern: /^φ\/φ$/, result: 1 },
+        { pattern: /^phi\/phi$/, result: 1 },
+        { pattern: /^τ\/τ$/, result: 1 },
+        { pattern: /^tau\/tau$/, result: 1 },
+        { pattern: /^√2\/√2$/, result: 1 },
+        { pattern: /^√3\/√3$/, result: 1 },
+        { pattern: /^√5\/√5$/, result: 1 },
+        { pattern: /^π-π$/, result: 0 },
+        { pattern: /^pi-pi$/, result: 0 },
+        { pattern: /^e-e$/, result: 0 },
+        { pattern: /^2\*π\/τ$/, result: 1 },
+        { pattern: /^τ\/2\*π$/, result: 1 },
+    ];
+
+    for (const knownCase of knownRationalResults) {
+        if (knownCase.pattern.test(normalizedExpr)) {
+            if (Math.abs(result - knownCase.result) < 0.0001) {
+                if (knownCase.result > 0 && Number.isInteger(knownCase.result)) {
+                    return 'naturals';
+                }
+                if (Number.isInteger(knownCase.result)) {
+                    return 'integers';
+                }
+                return 'rationals';
+            }
+        }
+    }
+
+    const irrationalSymbols = ['π', 'pi', 'e', 'φ', 'phi', 'τ', 'tau', 'ln2', 'ln10', '√', 'sqrt'];
+    const containsIrrationals = irrationalSymbols.some(symbol => expression.includes(symbol));
+
+    if (containsIrrationals) {
+        const rationalResultPatterns = [
+            /π\+\(-π\)/, /pi\+\(-pi\)/, /e\+\(-e\)/, /φ\+\(-φ\)/, /phi\+\(-phi\)/,
+            /π-π/, /pi-pi/, /e-e/, /φ-φ/, /phi-phi/, /τ-τ/, /tau-tau/,
+            /√2-√2/, /√3-√3/, /√5-√5/,
+            /2\*π\/τ/, /2\*pi\/tau/, /τ\/2\*π/, /tau\/2\*pi/
+        ];
+
+        const isSpecialRational = rationalResultPatterns.some(pattern =>
+            pattern.test(expression.replace(/\s/g, ''))
+        );
+
+        if (isSpecialRational) {
+            if (result > 0 && Number.isInteger(result)) {
+                return 'naturals';
+            }
+            if (Number.isInteger(result)) {
+                return 'integers';
+            }
+            return 'rationals';
+        }
+
+        return 'irrationals';
+    }
+
+    if (result > 0 && Number.isInteger(result)) {
+        return 'naturals';
+    }
+    if (Number.isInteger(result)) {
+        return 'integers';
+    }
+    return 'rationals';
+}
+
+function getClassificationName(classification) {
+    const names = {
+        'naturals': 'ℕ (Naturales)',
+        'integers': 'ℤ (Enteros)', 
+        'rationals': 'ℚ (Racionales)',
+        'irrationals': 'ℝ-ℚ (Irracionales)'
+    };
+    return names[classification] || 'No clasificado';
+}
+
+// FUNCIONES DE INTERFAZ
+function addNumber() {
+    const input = document.getElementById('numberInput').value;
+    
+    if (!input) {
+        alert('Por favor ingresa un número');
+        return;
+    }
+    
+    const value = parseNumber(input);
+    if (value === null) {
+        alert('Formato de número no válido. Ejemplos válidos: sqrt(7), 2*π, 1/e, √2, -1/2');
+        return;
+    }
+    
+    if (Math.abs(value) > currentRange) {
+        alert(`El número está fuera del rango actual (-${currentRange} a ${currentRange}). Cambia el rango de visualización.`);
+        return;
+    }
+    
+    const existingPoint = points.find(p => Math.abs(p.value - value) < 0.0001);
+    if (existingPoint) {
+        alert('Este número ya está en la recta numérica');
+        return;
+    }
+    
+    const classification = classifyNumber(value, input);
+    
+    points.push({
+        value: value,
+        originalInput: input,
+        classification: classification
+    });
+    
+    document.getElementById('numberInput').value = '';
+    updateDisplay();
+}
+
+function addPresetNumber(input) {
+    const value = parseNumber(input);
+    
+    if (value === null || Math.abs(value) > currentRange) {
+        alert(`El número ${input} está fuera del rango actual`);
+        return;
+    }
+    
+    const existingPoint = points.find(p => Math.abs(p.value - value) < 0.0001);
+    if (existingPoint) {
+        alert('Este número ya está en la recta numérica');
+        return;
+    }
+    
+    const classification = classifyNumber(value, input);
+    
+    points.push({
+        value: value,
+        originalInput: input,
+        classification: classification
+    });
+    
+    updateDisplay();
+}
+
+function clearAll() {
+    if (points.length === 0) return;
+    
+    if (confirm('¿Estás seguro de que deseas eliminar todos los puntos?')) {
+        points = [];
+        updateDisplay();
+    }
+}
+
+function updateDisplay() {
+    drawNumberLine();
+    updatePointsList();
+    updateDistanceSelectors();
+}
+
+// FUNCIONES DE VISUALIZACIÓN
+function drawNumberLine() {
+    const numberLine = document.getElementById('numberLine');
+    numberLine.innerHTML = '';
+    
+    const line = document.createElement('div');
+    line.className = 'line';
+    numberLine.appendChild(line);
+    
+    const tickCount = currentRange * 2 + 1;
+    for (let i = 0; i < tickCount; i++) {
+        const value = -currentRange + i;
+        const percentage = (i / (tickCount - 1)) * 90 + 5;
+        
+        const tick = document.createElement('div');
+        tick.className = 'tick';
+        tick.style.left = percentage + '%';
+        numberLine.appendChild(tick);
+        
+        const label = document.createElement('div');
+        label.className = 'tick-label';
+        label.style.left = percentage + '%';
+        label.textContent = value;
+        numberLine.appendChild(label);
+    }
+    
+    points.forEach((point, index) => {
+        const percentage = ((point.value + currentRange) / (2 * currentRange)) * 90 + 5;
+        
+        const pointElement = document.createElement('div');
+        pointElement.className = `number-point ${point.classification}`;
+        pointElement.style.left = percentage + '%';
+        pointElement.draggable = false;
+        
+        const pointLabel = document.createElement('div');
+        pointLabel.className = 'point-label';
+        pointLabel.textContent = `${point.originalInput} ≈ ${point.value.toFixed(3)}`;
+        pointElement.appendChild(pointLabel);
+        
+        pointElement.onclick = () => removePoint(index);
+        pointElement.title = `${point.originalInput} (${getClassificationName(point.classification)})\nHaz clic para eliminar`;
+        
+        numberLine.appendChild(pointElement);
+    });
+}
+
+function removePoint(index) {
+    if (confirm('¿Deseas eliminar este punto?')) {
+        points.splice(index, 1);
+        updateDisplay();
+    }
+}
+
+function updatePointsList() {
+    const pointsList = document.getElementById('pointsList');
+    
+    if (points.length === 0) {
+        pointsList.innerHTML = `
+            <div class="empty-state">
+                <p>Agrega números para ver su clasificación aquí</p>
+                <small>Los puntos aparecerán ordenados de menor a mayor</small>
+            </div>
+        `;
+        return;
+    }
+    
+    const sortedPoints = [...points].sort((a, b) => a.value - b.value);
+    
+    pointsList.innerHTML = sortedPoints.map(point => `
+        <div class="point-item">
+            <div>
+                <strong>${point.originalInput}</strong> ≈ ${point.value.toFixed(6)}
+                <br>
+                <small>${getClassificationName(point.classification)}</small>
+            </div>
+            <div style="text-align: right;">
+                <small>Posición: ${point.value.toFixed(3)}</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateDistanceSelectors() {
+    const pointAItems = document.getElementById('pointA-items');
+    const pointBItems = document.getElementById('pointB-items');
+    const pointASelected = document.getElementById('pointA-selected');
+    const pointBSelected = document.getElementById('pointB-selected');
+    
+    pointAItems.innerHTML = '<div data-value="">Selecciona un punto</div>';
+    pointBItems.innerHTML = '<div data-value="">Selecciona un punto</div>';
+    
+    if (points.length === 0) {
+        pointASelected.textContent = 'Selecciona un punto';
+        pointBSelected.textContent = 'Selecciona un punto';
+        document.getElementById('pointA-container').setAttribute('data-value', '');
+        document.getElementById('pointB-container').setAttribute('data-value', '');
+        return;
+    }
+    
+    points.forEach((point, index) => {
+        const optionText = `${point.originalInput} (${point.value.toFixed(3)})`;
+        
+        const optionA = document.createElement('div');
+        optionA.setAttribute('data-value', index);
+        optionA.textContent = optionText;
+        pointAItems.appendChild(optionA);
+        
+        const optionB = document.createElement('div');
+        optionB.setAttribute('data-value', index);
+        optionB.textContent = optionText;
+        pointBItems.appendChild(optionB);
+    });
+}
+
+function calculateDistance() {
+    const pointAValue = document.getElementById('pointA-container').getAttribute('data-value');
+    const pointBValue = document.getElementById('pointB-container').getAttribute('data-value');
+    const resultDiv = document.getElementById('distanceResult');
+
+    if (!pointAValue || !pointBValue) {
+        resultDiv.innerHTML = '<div class="distance-result" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-color: #e74c3c; color: #c0392b;"><strong>Error:</strong> Selecciona ambos puntos para calcular la distancia</div>';
+        return;
+    }
+
+    if (pointAValue === pointBValue) {
+        resultDiv.innerHTML = '<div class="distance-result" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-color: #e74c3c; color: #c0392b;"><strong>Error:</strong> Selecciona dos puntos diferentes</div>';
+        return;
+    }
+
+    const pointA = points[parseInt(pointAValue)];
+    const pointB = points[parseInt(pointBValue)];
+    
+    const distance = Math.abs(pointA.value - pointB.value);
+
+    resultDiv.innerHTML = `
+        <div class="distance-result">
+            <strong>Distancia entre ${pointA.originalInput} y ${pointB.originalInput}:</strong><br>
+            |${pointA.value.toFixed(3)} - ${pointB.value.toFixed(3)}| = ${distance.toFixed(6)} unidades
+        </div>
+    `;
+}
+
+// SELECTORES PERSONALIZADOS
+function initCustomSelects() {
+    ['pointA', 'pointB'].forEach(selectId => {
+        const container = document.getElementById(selectId + '-container');
+        const selected = document.getElementById(selectId + '-selected');
+        const items = document.getElementById(selectId + '-items');
+
+        selected.addEventListener('click', function(e) {
+            e.stopPropagation();
+
+            document.querySelectorAll('.select-items').forEach(otherItems => {
+                if (otherItems !== items) {
+                    otherItems.classList.remove('show');
+                }
+            });
+            document.querySelectorAll('.select-selected').forEach(otherSelected => {
+                if (otherSelected !== selected) {
+                    otherSelected.classList.remove('select-arrow-active');
+                }
+            });
+
+            const isCurrentlyOpen = items.classList.contains('show');
+            if (isCurrentlyOpen) {
+                items.classList.remove('show');
+                selected.classList.remove('select-arrow-active');
+                adjustZIndex(null);
+            } else {
+                items.classList.add('show');
+                selected.classList.add('select-arrow-active');
+                adjustZIndex(selectId);
+            }
+        });
+
+        items.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (e.target.hasAttribute('data-value')) {
+                selected.textContent = e.target.textContent;
+                container.setAttribute('data-value', e.target.getAttribute('data-value'));
+
+                items.querySelectorAll('.selected').forEach(item => item.classList.remove('selected'));
+                e.target.classList.add('selected');
+
+                items.classList.remove('show');
+                selected.classList.remove('select-arrow-active');
+                adjustZIndex(null);
+            }
+        });
+    });
+}
+
+function closeAllSelect() {
+    document.querySelectorAll('.select-items').forEach(items => {
+        items.classList.remove('show');
+    });
+    document.querySelectorAll('.select-selected').forEach(selected => {
+        selected.classList.remove('select-arrow-active');
+    });
+}
+
+function adjustZIndex(activeSelectId) {
+    document.querySelectorAll('.distance-field').forEach(field => {
+        field.style.zIndex = '100';
+    });
+    document.querySelectorAll('.distance-field .custom-select').forEach(select => {
+        select.style.zIndex = '101';
+    });
+    document.querySelectorAll('.distance-field .select-items').forEach(items => {
+        items.style.zIndex = '1000';
+    });
+
+    if (activeSelectId) {
+        const activeField = document.getElementById(activeSelectId + '-container').closest('.distance-field');
+        const activeSelect = document.getElementById(activeSelectId + '-container');
+        const activeItems = document.getElementById(activeSelectId + '-items');
+
+        if (activeField) activeField.style.zIndex = '2000';
+        if (activeSelect) activeSelect.style.zIndex = '2001';
+        if (activeItems) activeItems.style.zIndex = '12000';
+    }
+}
+
+// INICIALIZACIÓN
+document.getElementById('numberInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        addNumber();
+    }
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.custom-select')) {
+        closeAllSelect();
+        adjustZIndex(null);
+    }
+});
+
+initCustomSelects();
+updateDisplay();
+</script>
 </body>
 </html>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>División sintética</title>
+    <title>Calculadora Simbólica Ecuaciones Lineales</title>
+
 <style>
     * {
         margin: 0;
@@ -20,6 +21,9 @@
         align-items: flex-start;
         min-height: 100vh;
         color: #e4e4e4;
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(0, 118, 212, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(56, 163, 255, 0.1) 0%, transparent 50%);
     }
 
     .container {
@@ -27,183 +31,1033 @@
         border-radius: 16px;
         padding: 40px;
         width: 100%;
-        max-width: 850px;
-        box-shadow: 0 0 25px rgba(0, 140, 255, 0.2);
-        border: 1px solid rgba(0, 140, 255, 0.2);
+        max-width: 900px;
+        box-shadow: 
+            0 0 25px rgba(0, 140, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 140, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #0076d4, #00b4ff, #0076d4);
+        z-index: 1;
     }
 
     h1 {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin-bottom: 5px;
         font-weight: 700;
         color: #38a3ff;
+        text-shadow: 0 0 10px rgba(56, 163, 255, 0.3);
+        letter-spacing: 0.5px;
     }
 
     .subtitle {
         text-align: center;
         color: #9aa0b1;
         margin-bottom: 30px;
+        font-size: 1rem;
+        opacity: 0.9;
     }
 
-    label {
+    /* Tarjetas informativas */
+    .info-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .info-card {
+        background: rgba(27, 32, 43, 0.8);
+        border: 1px solid #2e3545;
+        border-radius: 10px;
+        padding: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        border-color: #38a3ff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 140, 255, 0.1);
+    }
+
+    .info-card h3 {
+        color: #6bb7ff;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .info-card ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .info-card li {
+        color: #b0b5c2;
+        font-size: 0.8rem;
+        padding: 3px 0;
+        padding-left: 12px;
+        position: relative;
+    }
+
+    .info-card li::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: #38a3ff;
+        font-size: 0.9rem;
+    }
+
+    /* Secciones */
+    .section {
+        margin-bottom: 35px;
+        position: relative;
+    }
+
+    .section::after {
+        content: '';
+        display: block;
+        height: 1px;
+        background: linear-gradient(90deg, #2e3545, #38a3ff, #2e3545);
+        margin: 30px 0;
+        opacity: 0.3;
+    }
+
+    .section:last-child::after {
+        display: none;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #38a3ff;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #2e3545;
+    }
+
+    .section-title::before {
+        content: '🧮';
+        font-size: 1.2rem;
+    }
+
+    .section:nth-child(2) .section-title::before {
+        content: '🔢';
+    }
+
+    .section p {
+        color: #b0b5c2;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        font-size: 0.95rem;
+    }
+
+    /* Inputs */
+    .input-section {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .input-section label {
         font-weight: 600;
         color: #6bb7ff;
         margin-bottom: 8px;
         display: block;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    input[type="text"] {
+    .input-section label::before {
+        content: '📝';
+        font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         background: #1b202b;
         border: 1px solid #2e3545;
         color: #d7d7d7;
         border-radius: 8px;
         font-size: 1rem;
-        transition: 0.25s;
+        transition: all 0.25s ease;
+        font-family: 'Consolas', 'Courier New', monospace;
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus,
+    input[type="number"]:focus {
         border-color: #38a3ff;
         background: #161a24;
         outline: none;
-        box-shadow: 0 0 8px rgba(56, 163, 255, 0.4);
+        box-shadow: 0 0 12px rgba(56, 163, 255, 0.4);
+        transform: translateY(-1px);
     }
 
+    /* Ejemplos */
     .example {
         background: #1b202b;
-        padding: 10px;
-        margin-top: 8px;
+        padding: 12px;
+        margin-top: 10px;
         border-left: 3px solid #38a3ff;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 0.85rem;
+        line-height: 1.4;
+        border: 1px solid #2e3545;
     }
 
+    .example strong {
+        color: #6bb7ff;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    /* Botones */
     button {
-        margin-top: 15px;
-        width: 100%;
-        padding: 14px;
+        padding: 14px 25px;
         border-radius: 10px;
         border: none;
         background: linear-gradient(90deg, #0076d4, #00b4ff);
         color: white;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.25s;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
     }
 
     button:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 12px rgba(0, 180, 255, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 180, 255, 0.4);
+        background: linear-gradient(90deg, #0088ff, #00c8ff);
     }
 
-    .result-section {
-        margin-top: 35px;
+    button:active {
+        transform: translateY(0);
+    }
+
+    button::after {
+        content: '⚡';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1rem;
+    }
+
+    /* Resultados */
+    .result-box {
+        margin-top: 25px;
         padding: 25px;
         border-radius: 12px;
         background: #10131a;
         border: 1px solid rgba(0, 140, 255, 0.25);
-        display: none;
+        animation: fadeIn 0.5s ease-out;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
     }
 
-    .result-section.show {
-        display: block;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .result-title {
-        font-size: 1.2rem;
-        margin-bottom: 12px;
-        color: #38a3ff;
-        font-weight: 700;
+    .formula-original {
+        background: rgba(56, 163, 255, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        border-left: 4px solid #38a3ff;
+        color: #b8d9ff;
+        font-family: 'Consolas', 'Courier New', monospace;
     }
 
-    .process-table {
+    /* Tabla */
+    table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 1px solid #2c3344;
+        margin-top: 15px;
+        font-family: 'Consolas', 'Courier New', monospace;
     }
 
-    .process-table td {
-        padding: 12px;
-        border: 1px solid #2c3344;
-        text-align: center;
-        background: #1b202b;
-        color: #e3e3e3;
-    }
-
-    .process-table tr:first-child td {
-        background: #0076d4;
+    th {
+        background: linear-gradient(135deg, #0076d4, #0059a3);
         color: #fff;
+        text-align: left;
+        padding: 12px;
         font-weight: bold;
+        font-size: 0.95rem;
     }
 
-    .divisor-cell {
-        background: #263042 !important;
-        font-weight: bold;
-        color: #38a3ff;
-    }
-
-    .final-result {
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #2e3545;
         background: #1b202b;
-        border: 1px solid #2c3344;
-        border-radius: 10px;
-        padding: 15px;
-        margin-top: 20px;
+        color: #d7d7d7;
     }
 
-    .error {
+    tbody tr:nth-child(even) {
+        background: #161a24;
+    }
+
+    tbody tr:hover {
+        background: rgba(56, 163, 255, 0.1);
+    }
+
+    /* Mensajes de error */
+    .error-message {
         padding: 15px;
-        background: #281014;
+        background: linear-gradient(135deg, #281014, #3a1520);
         border-left: 4px solid #ff4d4d;
-        border-radius: 8px;
+        border-radius: 10px;
         color: #ffb3b3;
         margin-top: 20px;
+        animation: fadeIn 0.3s ease-out;
+        border: 1px solid #ff4d4d;
+    }
+
+    .error-message h4 {
+        color: #ff6b6b;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .error-message h4::before {
+        content: '❌';
+    }
+
+    /* Nota didáctica */
+    .nota-didactica {
+        background: rgba(255, 193, 7, 0.1);
+        padding: 15px;
+        margin-top: 20px;
+        border-left: 5px solid #ffc107;
+        border-radius: 8px;
+        color: #ffd966;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #9aa0b1;
+        font-size: 0.9rem;
+        padding-top: 20px;
+        border-top: 1px solid #2e3545;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #2e3545;
+    }
+
+    .footer-link {
+        color: #6bb7ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border: 1px solid #2e3545;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        background: rgba(27, 32, 43, 0.5);
+    }
+
+    .footer-link:hover {
+        border-color: #38a3ff;
+        background: rgba(56, 163, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container {
+            padding: 25px;
+        }
+        
+        .info-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+        }
+        
+        button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .result-box {
+            padding: 20px;
+        }
+        
+        table {
+            font-size: 0.85rem;
+        }
+        
+        .process-table td {
+            padding: 8px 10px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 15px;
+        }
+        
+        .container {
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 1.6rem;
+        }
+        
+        button {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+        
+        .result-box {
+            padding: 15px;
+        }
+        
+        .footer-links {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-link {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    /* Scrollbar personalizado */
+    .result-box::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .result-box::-webkit-scrollbar-track {
+        background: #1b202b;
+        border-radius: 4px;
+    }
+
+    .result-box::-webkit-scrollbar-thumb {
+        background: #38a3ff;
+        border-radius: 4px;
+    }
+
+    .result-box::-webkit-scrollbar-thumb:hover {
+        background: #0076d4;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: 'Consolas', 'Courier New', monospace;
+        color: #d7d7d7;
+        font-size: 0.95rem;
     }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>División Sintética de Polinomios</h1>
-    <p class="subtitle">Compatible con números reales y complejos</p>
-
-    <!-- Inputs -->
-    <div class="input-section">
-        <label>Polinomio:</label>
-        <input id="polinomio" type="text" placeholder="Ej: x^3 - 6x^2 + 11x - 6">
-        <div class="example">
-            Ejemplos:<br>
-            • 5x^3 + 3x^2 + 2x + 1<br>
-            • x^3 - 6x^2 + 11x - 6<br>
-            • 2x^2 + (3+2i)x + 1<br>
-            • x^4 - 1
+    <!-- Header -->
+    <h1>Calculadora Simbólica</h1>
+    <p class="subtitle">Álgebra Lineal – Despeje y Ecuaciones</p>
+    
+    <!-- Tarjetas informativas -->
+    <div class="info-cards">
+        <div class="info-card">
+            <h3>🎯 Ecuaciones Lineales</h3>
+            <ul>
+                <li>Solución para variable x</li>
+                <li>Simplificación algebraica</li>
+                <li>Resultado paso a paso</li>
+            </ul>
+        </div>
+        
+        <div class="info-card">
+            <h3>📝 Formato de Entrada</h3>
+            <ul>
+                <li>Ecuaciones: 2x + 3 = x + 8</li>
+                <li>Fórmulas: C = 5(F - 32)/9</li>
+                <li>Uso de paréntesis permitido</li>
+            </ul>
+        </div>
+        
+        <div class="info-card">
+            <h3>🧮 Resultados</h3>
+            <ul>
+                <li>Despeje de variables</li>
+                <li>Tabla de soluciones</li>
+                <li>Explicación didáctica</li>
+            </ul>
         </div>
     </div>
 
-    <div class="input-section">
-        <label>Raíz (divisor):</label>
-        <input id="raiz" type="text" placeholder="Ej: 2 o 1+i">
-        <div class="example">
-            Ejemplos: 2, -3, 1+i, 2-3i
+    <!-- Sección 1: Ecuaciones -->
+    <div class="section">
+        <h2 class="section-title">1. Solución de Ecuaciones de una Variable (x)</h2>
+        <p>Introduce una ecuación lineal en términos de x. La calculadora resolverá para encontrar el valor de x.</p>
+        
+        <div class="input-section">
+            <label>Ecuación:</label>
+            <input type="text" id="ecuacion" value="2x + 3 = x + 8" placeholder="Ej: 2x + 3 = x + 8">
+            <div class="example">
+                <strong>Ejemplos válidos:</strong>
+                • 2x + 3 = x + 8<br>
+                • 3(x - 2) = 2x + 5<br>
+                • 4x - 7 = 2x + 1
+            </div>
         </div>
+
+        <button onclick="resolverEcuacionParseada()">Resolver Ecuación</button>
+        <button onclick="clearEquation()" style="background: linear-gradient(90deg, #2e3545, #4a5568);">🗑️ Limpiar</button>
+
+        <div id="resDespejeParseado" class="result-box" style="display: none;"></div>
+        <div id="mensajeError" class="error-message" style="display: none;"></div>
     </div>
 
-    <button onclick="calcularDivision()">Calcular División Sintética</button>
+    <!-- Sección 2: Fórmulas -->
+    <div class="section">
+        <h2 class="section-title">2. Despeje Simbólico de Fórmulas</h2>
+        <p>Introduce una fórmula con múltiples variables. La calculadora generará despejes para cada variable.</p>
+        
+        <div class="input-section">
+            <label>Fórmula:</label>
+            <input type="text" id="formulaLiteral" value="C = 5(F - 32)/9" placeholder="Ej: C = 5(F - 32)/9">
+            <div class="example">
+                <strong>Ejemplos válidos:</strong>
+                • C = 5(F - 32)/9<br>
+                • V = I * R<br>
+                • A = π * r^2
+            </div>
+        </div>
 
-    <div id="resultado" class="result-section"></div>
+        <button onclick="procesarFormulaLiteral()">Generar Despejes</button>
+        <button onclick="clearFormula()" style="background: linear-gradient(90deg, #2e3545, #4a5568);">🗑️ Limpiar</button>
+
+        <div id="resFormulaLiteral" class="result-box" style="display: none;"></div>
+        <div id="mensajeErrorFormula" class="error-message" style="display: none;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Desarrollado para tu Portafolio — Álgebra Lineal</p>
+        <div class="footer-links">
+            <a href="#" class="footer-link" onclick="showHelp(); return false;">❓ Ayuda</a>
+            <a href="#" class="footer-link" onclick="showInfo(); return false;">ℹ️ Información</a>
+            <a href="#" class="footer-link" onclick="loadExamples(); return false;">📚 Ejemplos</a>
+        </div>
+    </footer>
 </div>
 
-<!-- JS ORIGINAL COMPLETO (SIN CAMBIOS) -->
 <script>
-/* --- TODO EL CÓDIGO JS ES IGUAL QUE EL TUYO --- */
-/* LO OMITO PARA AHORRAR ESPACIO, PERO AQUÍ PEGAS EXACTAMENTE EL MISMO JS SIN NINGUNA MODIFICACIÓN */
+/* ============================
+   JAVASCRIPT ORIGINAL (modificado para el nuevo estilo)
+   ============================ */
+
+function cleanString(str) { return str.replace(/\s+/g, ''); }
+
+function resolverEcuacionParseada() {
+    const ecuacionStr = document.getElementById('ecuacion').value;
+    const resBox = document.getElementById('resDespejeParseado');
+    const errorBox = document.getElementById('mensajeError');
+
+    resBox.innerHTML = "";
+    errorBox.innerText = "";
+    resBox.style.display = "none";
+    errorBox.style.display = "none";
+
+    try {
+        const partes = ecuacionStr.split('=');
+        if (partes.length !== 2) throw new Error("La ecuación debe tener un '='");
+
+        const left = partes[0].trim();
+        const right = partes[1].trim();
+
+        const eq = `(${left}) - (${right})`;
+
+        const nodo = math.parse(eq);
+        const simplificado = math.simplify(nodo);
+
+        const coef = extraerCoeficientes(simplificado.toString());
+        const x = -coef.b / coef.a;
+
+        resBox.innerHTML = `
+            <div class="formula-original">Ecuación Original: ${ecuacionStr}</div>
+            <p><strong>Solución:</strong> x = ${x}</p>
+            <p><strong>Simplificada:</strong> ${simplificado.toString()} = 0</p>
+            <div class="nota-didactica">
+                Nota: La solución se obtuvo simplificando la ecuación y despejando x.
+            </div>
+        `;
+        resBox.style.display = "block";
+    }
+    catch (e) {
+        errorBox.innerHTML = `
+            <h4>Error en la ecuación</h4>
+            <p>${e.message}</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                Verifica el formato de la ecuación. Debe ser una ecuación lineal en x.
+            </p>
+        `;
+        errorBox.style.display = "block";
+    }
+}
+
+function extraerCoeficientes(eq) {
+    eq = eq.replace(/\s+/g, '');
+    let a = 0, b = 0;
+
+    const rx = /([+-]?\d*\.?\d*)\*?x/g;
+    let m;
+    while ((m = rx.exec(eq)) !== null) {
+        let c = m[1];
+        if (c === '' || c === '+') c = '1';
+        if (c === '-') c = '-1';
+        a += parseFloat(c);
+    }
+
+    const sinX = eq.replace(/[+-]?\d*\.?\d*\*?x/g, '');
+    try { b = math.evaluate(sinX); } catch { b = 0; }
+
+    return { a, b };
+}
+
+function extractVariables(formula) {
+    const m = formula.match(/[a-zA-Z][a-zA-Z0-9]*/g);
+    return m ? Array.from(new Set(m)) : [];
+}
+
+function despejarVariable(expr, varObj, varIzq) {
+    try {
+        expr = expr.replace(/\s+/g, '');
+        const patron = /(\d*\.?\d*)\(([a-zA-Z]+)([+-])(\d+\.?\d*)\)\/(\d+\.?\d*)/;
+        const match = expr.match(patron);
+
+        if (match && match[2] === varObj) {
+            const coef = match[1] || '1';
+            const op = match[3];
+            const cons = match[4];
+            const div = match[5];
+            const opInv = op === '-' ? '+' : '-';
+
+            return coef === '1'
+                ? `${varIzq} * ${div} ${opInv} ${cons}`
+                : `${varIzq} * ${div} / ${coef} ${opInv} ${cons}`;
+        }
+
+        if (expr.includes('+') || expr.includes('-')) {
+            const r = despejarSumaResta(expr, varObj, varIzq);
+            if (r !== null) return r;
+        }
+
+        if (expr.includes('/')) {
+            const partes = dividirPorOperadorPrincipal(expr, '/');
+            const num = partes[0], den = partes[1];
+
+            if (num.includes(varObj)) {
+                if (num === varObj) return `${varIzq} * ${den}`;
+                const f = extraerFactoresMultiplicacion(num).filter(x => x !== varObj);
+                return f.length === 0
+                    ? `${varIzq} * ${den}`
+                    : `${varIzq} * ${den} / (${f.join('*')})`;
+            }
+
+            if (den.includes(varObj)) {
+                if (den === varObj) return `${num} / ${varIzq}`;
+                const f = extraerFactoresMultiplicacion(den).filter(x => x !== varObj);
+                return f.length === 0
+                    ? `${num} / ${varIzq}`
+                    : `${num} / (${varIzq} * ${f.join('*')})`;
+            }
+        }
+
+        if (expr.includes('*')) {
+            const f = extraerFactoresMultiplicacion(expr).filter(x => x !== varObj);
+            if (f.length === 0) return varIzq;
+            if (f.length === 1) return `${varIzq} / ${f[0]}`;
+            return `${varIzq} / (${f.join('*')})`;
+        }
+
+        return varIzq;
+    }
+    catch {
+        return "Error";
+    }
+}
+
+function despejarSumaResta(expr, varObj, varIzq) {
+    const t = parsearTerminos(expr);
+    let conVar = null, otros = [];
+
+    for (const x of t) {
+        if (x.texto.includes(varObj)) conVar = x;
+        else otros.push(x);
+    }
+
+    if (!conVar) return null;
+
+    let res = varIzq;
+
+    for (const o of otros) {
+        const inv = o.signo === '+' ? '-' : '+';
+        res += ` ${inv} ${o.texto}`;
+    }
+
+    if (conVar.texto !== varObj && conVar.texto.includes('*')) {
+        const pr = conVar.texto.split('*').find(p => p !== varObj);
+        res = `(${res}) / ${pr}`;
+    }
+
+    if (conVar.signo === '-') res = `-(${res})`;
+
+    return res;
+}
+
+function parsearTerminos(expr) {
+    const arr = [];
+    let txt = '', sign = '+', lvl = 0;
+
+    for (let i = 0; i < expr.length; i++) {
+        const c = expr[i];
+
+        if (c === '(') { lvl++; txt += c; }
+        else if (c === ')') { lvl--; txt += c; }
+        else if ((c === '+' || c === '-') && lvl === 0) {
+            if (txt !== '') arr.push({ signo: sign, texto: txt });
+            sign = c;
+            txt = '';
+        } else txt += c;
+    }
+
+    if (txt) arr.push({ signo: sign, texto: txt });
+    return arr;
+}
+
+function dividirPorOperadorPrincipal(expr, op) {
+    let lvl = 0, pos = -1;
+
+    for (let i = expr.length - 1; i >= 0; i--) {
+        const c = expr[i];
+        if (c === ')') lvl++;
+        else if (c === '(') lvl--;
+        else if (c === op && lvl === 0) { pos = i; break; }
+    }
+
+    if (pos === -1) return [expr];
+    return [expr.substring(0, pos), expr.substring(pos + 1)];
+}
+
+function extraerFactoresMultiplicacion(expr) {
+    const arr = [];
+    let txt = '', lvl = 0;
+
+    for (let i = 0; i < expr.length; i++) {
+        const c = expr[i];
+        if (c === '(') { lvl++; txt += c; }
+        else if (c === ')') { lvl--; txt += c; }
+        else if (c === '*' && lvl === 0) {
+            arr.push(txt);
+            txt = '';
+        } else txt += c;
+    }
+
+    if (txt) arr.push(txt);
+    return arr;
+}
+
+function procesarFormulaLiteral() {
+    const f = document.getElementById("formulaLiteral").value;
+    const box = document.getElementById("resFormulaLiteral");
+    const err = document.getElementById("mensajeErrorFormula");
+
+    box.innerHTML = "";
+    err.innerText = "";
+    box.style.display = "none";
+    err.style.display = "none";
+
+    try {
+        const partes = f.split('=');
+        if (partes.length !== 2) throw new Error("Debe contener un signo '='");
+
+        const left = partes[0].trim();
+        const right = partes[1].trim();
+
+        const vars = extractVariables(f);
+        if (vars.length < 2) throw new Error("Se requieren al menos 2 variables");
+
+        let html = `
+        <div class="formula-original">Fórmula Original: ${f}</div>
+        <p><strong>Variables encontradas:</strong> ${vars.join(", ")}</p>
+
+        <table>
+            <thead>
+                <tr><th>Variable</th><th>Despeje</th></tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const v of vars) {
+            let r = (left === v)
+                ? `${v} = ${right}`
+                : `${v} = ${despejarVariable(right, v, left)}`;
+
+            html += `<tr><td><strong>${v}</strong></td><td><pre>${r}</pre></td></tr>`;
+        }
+
+        html += `</tbody></table>
+        <div class="nota-didactica">
+        Nota: Los despejes se generan mediante manipulación algebraica directa.
+        Puedes copiar los resultados para usarlos en tus cálculos.
+        </div>`;
+
+        box.innerHTML = html;
+        box.style.display = "block";
+    }
+    catch (e) {
+        err.innerHTML = `
+            <h4>Error en la fórmula</h4>
+            <p>${e.message}</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                Verifica el formato de la fórmula. Debe contener al menos dos variables.
+            </p>
+        `;
+        err.style.display = "block";
+    }
+}
+
+// Funciones auxiliares para la nueva interfaz
+function showMessage(message, type = 'info') {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background: ${type === 'success' ? '#10b981' : '#38a3ff'};
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.1);
+        max-width: 300px;
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+            document.body.removeChild(messageDiv);
+        }, 300);
+    }, 3000);
+    
+    if (!document.querySelector('#message-styles')) {
+        const style = document.createElement('style');
+        style.id = 'message-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+function showHelp() {
+    const helpText = `
+AYUDA - CALCULADORA SIMBÓLICA
+
+¿QUÉ ES ESTA CALCULADORA?
+Es una herramienta para resolver ecuaciones lineales y despejar fórmulas simbólicamente.
+
+SECCIÓN 1: ECUACIONES LINEALES
+• Introduce una ecuación con variable x
+• Ejemplo: 2x + 3 = x + 8
+• La calculadora resolverá para x
+
+SECCIÓN 2: DESPEJE DE FÓRMULAS
+• Introduce una fórmula con múltiples variables
+• Ejemplo: C = 5(F - 32)/9
+• La calculadora despejará cada variable
+
+FORMATO DE ENTRADA:
+• Usa letras para variables
+• Usa +, -, *, / para operaciones
+• Usa paréntesis para agrupar
+• No uses espacios innecesarios
+
+EJEMPLOS VÁLIDOS:
+Ecuaciones:
+  2x + 3 = x + 8
+  3(x - 2) = 2x + 5
+  4x - 7 = 2x + 1
+
+Fórmulas:
+  C = 5(F - 32)/9
+  V = I * R
+  A = π * r^2
+
+NOTAS:
+• Los resultados son simbólicos
+• Se muestra el proceso paso a paso
+• Puedes copiar los resultados
+    `;
+    
+    alert(helpText);
+}
+
+function showInfo() {
+    const infoText = `
+INFORMACIÓN DEL PROYECTO
+
+Calculadora Simbólica de Ecuaciones Lineales
+
+DESCRIPCIÓN:
+Herramienta educativa para resolver ecuaciones lineales
+y despejar fórmulas de manera simbólica.
+
+CARACTERÍSTICAS:
+• Resolución de ecuaciones lineales en x
+• Despeje simbólico de fórmulas
+• Interfaz moderna y responsive
+• Resultados paso a paso
+• Soporte para múltiples variables
+
+OBJETIVO EDUCATIVO:
+Facilitar el aprendizaje del álgebra mediante
+una herramienta visual e interactiva.
+
+TECNOLOGÍAS:
+• HTML5, CSS3, JavaScript
+• Biblioteca Math.js
+• Algoritmos de manipulación algebraica
+
+DESARROLLADO PARA:
+Portafolio de Álgebra Lineal
+Herramientas Educativas Digitales
+    `;
+    
+    alert(infoText);
+}
+
+function loadExamples() {
+    const examples = [
+        {
+            ecuacion: "2x + 3 = x + 8",
+            formula: "C = 5(F - 32)/9"
+        },
+        {
+            ecuacion: "3(x - 2) = 2x + 5",
+            formula: "V = I * R"
+        },
+        {
+            ecuacion: "4x - 7 = 2x + 1",
+            formula: "A = π * r^2"
+        }
+    ];
+    
+    const randomIndex = Math.floor(Math.random() * examples.length);
+    const example = examples[randomIndex];
+    
+    document.getElementById('ecuacion').value = example.ecuacion;
+    document.getElementById('formulaLiteral').value = example.formula;
+    
+    showMessage(`Ejemplo ${randomIndex + 1} cargado correctamente`, 'success');
+    
+    // Resolver automáticamente
+    setTimeout(() => {
+        resolverEcuacionParseada();
+    }, 500);
+}
+
+function clearEquation() {
+    document.getElementById('ecuacion').value = '';
+    document.getElementById('resDespejeParseado').style.display = 'none';
+    document.getElementById('mensajeError').style.display = 'none';
+    showMessage('Ecuación limpiada', 'success');
+}
+
+function clearFormula() {
+    document.getElementById('formulaLiteral').value = '';
+    document.getElementById('resFormulaLiteral').style.display = 'none';
+    document.getElementById('mensajeErrorFormula').style.display = 'none';
+    showMessage('Fórmula limpiada', 'success');
+}
+
+// Inicialización
+document.addEventListener("DOMContentLoaded", function() {
+    // Configurar eventos de teclado
+    document.getElementById('ecuacion').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') resolverEcuacionParseada();
+    });
+    
+    document.getElementById('formulaLiteral').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') procesarFormulaLiteral();
+    });
+    
+    // Resolver primera ecuación al cargar
+    resolverEcuacionParseada();
+    
+    console.log('Calculadora Simbólica inicializada');
+});
 </script>
 
 </body>

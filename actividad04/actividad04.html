@@ -3,283 +3,806 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Conversiones - Números Complejos Roberto Balmes Solís</title>
-
+<title>Calculadora de Conversiones - Números Complejos</title>
 <style>
-/* ==================== RESET ==================== */
+/* ==================== VARIABLES Y RESET ==================== */
+:root {
+    --color-primary: #2c3e50;
+    --color-secondary: #3498db;
+    --color-accent: #e74c3c;
+    --color-success: #27ae60;
+    --color-warning: #f39c12;
+    --color-light: #ecf0f1;
+    --color-dark: #2c3e50;
+    --color-text: #333;
+    --color-border: #ddd;
+    --color-background: #f8f9fa;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+    --radius: 10px;
+    --transition: all 0.3s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ==================== BODY ==================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #e8edf3;
-    padding: 25px;
-}
-
-/* ==================== CONTENEDOR ==================== */
-.container {
-    max-width: 850px;
-    margin: auto;
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 35px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
-
-/* ==================== ENCABEZADOS ==================== */
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #1f2d3d;
-    font-weight: 300;
-}
-
-h2 {
-    color: #34495e;
-    font-size: 20px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-/* ==================== INSTRUCCIONES ==================== */
-.instructions {
-    background-color: #def7d6;
-    padding: 15px;
-    border-left: 5px solid #2ecc71;
-    border-radius: 5px;
-    margin-bottom: 25px;
-}
-.instructions ul {
-    margin-left: 20px;
-    margin-top: 10px;
-}
-.instructions li {
-    margin-bottom: 5px;
-}
-
-/* ==================== FORM SECTIONS ==================== */
-.form-section {
-    margin-bottom: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
     padding: 20px;
-    background: #f7f9fc;
-    border: 1px solid #d0d7e0;
-    border-radius: 8px;
 }
 
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-hover);
+    overflow: hidden;
+}
+
+/* ==================== ENCABEZADO ==================== */
+.header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1a252f 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.header .subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+/* ==================== TARJETAS DE INFORMACIÓN ==================== */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--color-background);
+}
+
+.card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border-top: 4px solid var(--color-secondary);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card h3 {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card h3:before {
+    content: "✓";
+    color: var(--color-success);
+    font-weight: bold;
+}
+
+.card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.card li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card li:before {
+    content: "→";
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+
+.card li:last-child {
+    border-bottom: none;
+}
+
+/* ==================== SECCIONES DE CONVERSIÓN ==================== */
+.conversion-sections {
+    padding: 0 2rem 2rem;
+}
+
+.section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--color-secondary);
+    transition: var(--transition);
+}
+
+.section:hover {
+    border-left-color: var(--color-success);
+    transform: translateX(5px);
+}
+
+.section h2 {
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-light);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.section h2:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--color-secondary);
+    border-radius: 50%;
+}
+
+/* ==================== FORMULARIOS Y ENTRADAS ==================== */
 .input-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
 }
 
-/* ==================== LABELS ==================== */
-label {
-    min-width: 20px;
-    color: #34495e;
-    font-weight: 500;
+.input-group:last-child {
+    margin-bottom: 0;
 }
 
-/* ==================== INPUTS ==================== */
-input[type="text"] {
-    width: 110px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #cdd3dd;
-    background: #fcfcfc;
+.input-field {
+    position: relative;
+    flex: 1;
+    min-width: 120px;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 1rem;
     font-family: 'Courier New', monospace;
-    text-align: center;
-    font-size: 14px;
+    transition: var(--transition);
+    background: var(--color-light);
 }
 
-input[type="text"]:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 3px rgba(52,152,219,0.5);
+.input-field input:focus {
     outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background: white;
 }
 
-input[readonly] {
-    background: #ebebeb !important;
+.input-field input[readonly] {
+    background: #f8f9fa;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
-/* ==================== OPERADORES ==================== */
 .operator {
-    font-size: 16px;
-    color: #555;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-secondary);
+    min-width: 20px;
+    text-align: center;
 }
 
 /* ==================== RESULTADOS ==================== */
 .result {
-    margin-top: 12px;
-    padding: 15px;
-    background: #f0f4f8;
-    border-left: 5px solid #2980b9;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--color-success);
+    margin-top: 1rem;
     font-family: 'Courier New', monospace;
-    border-radius: 5px;
-    font-size: 16px;
-    color: #1c2833;
+    font-size: 1.1rem;
+    color: var(--color-dark);
+    font-weight: 600;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    transition: var(--transition);
 }
 
-/* ==================== BOTÓN LIMPIAR ==================== */
-.clear-btn {
-    background-color: #e74c3c;
-    color: white;
-    padding: 12px 25px;
+.result:hover {
+    border-left-color: var(--color-secondary);
+    transform: translateX(3px);
+}
+
+/* ==================== BOTONES ==================== */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--color-background);
+}
+
+.btn {
+    padding: 14px 28px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
-    display: block;
-    margin: 25px auto 0;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.5px;
 }
-.clear-btn:hover {
-    background-color: #c0392b;
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, #2980b9 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--color-accent) 0%, #c0392b 100%);
+    color: white;
+}
+
+.btn:hover {
     transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* ==================== EJEMPLOS ==================== */
+.examples {
+    background: linear-gradient(135deg, #e8f4fc 0%, #d1ecf1 100%);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin: 0 2rem 2rem;
+    border: 2px dashed var(--color-border);
+}
+
+.examples h3 {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.example-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 3px solid var(--color-warning);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.example-item:hover {
+    background: var(--color-secondary);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+    background: var(--color-dark);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-info {
+    text-align: left;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    background: white;
+    color: var(--color-dark);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .operator {
+        transform: rotate(90deg);
+        margin: 0.5rem 0;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-info {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .section {
+        padding: 1.2rem;
+    }
+    
+    .header {
+        padding: 1.5rem;
+    }
+    
+    .info-cards {
+        padding: 1.5rem;
+    }
+    
+    .conversion-sections {
+        padding: 0 1.5rem 1.5rem;
+    }
+    
+    .examples {
+        margin: 0 1.5rem 1.5rem;
+    }
+}
+
+/* ==================== ANIMACIONES ==================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.card {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* ==================== INDICADOR DE ACTIVO ==================== */
+.input-field.active input {
+    border-color: var(--color-success);
+    background: linear-gradient(135deg, #e8f6f3 0%, white 100%);
+}
+
+.input-field.active:after {
+    content: "✓";
+    position: absolute;
+    right: 10px;
+    top: 38px;
+    color: var(--color-success);
+    font-weight: bold;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <h1>Calculadora de Conversiones de Números Complejos</h1>
+        <p class="subtitle">Transforma entre formas cartesiana, polar y exponencial en tiempo real</p>
+    </header>
 
-<h1>Calculadora de Conversiones de Números Complejos</h1>
+    <!-- TARJETAS INFORMATIVAS -->
+    <div class="info-cards">
+        <div class="card">
+            <h3>¿Qué es un número complejo?</h3>
+            <ul>
+                <li>Un número de la forma a + bi</li>
+                <li>Donde a es la parte real</li>
+                <li>b es la parte imaginaria</li>
+                <li>i es la unidad imaginaria (i² = -1)</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h3>Formas de representación</h3>
+            <ul>
+                <li><strong>Cartesiana:</strong> a + bi</li>
+                <li><strong>Polar:</strong> r(cos θ + i sin θ)</li>
+                <li><strong>Exponencial:</strong> re^(iθ)</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h3>Ejemplos válidos</h3>
+            <ul>
+                <li>sqrt(2) + sqrt(3)i</li>
+                <li>3(cos(pi/4) + i sin(pi/4))</li>
+                <li>2*e^(i*pi/3)</li>
+                <li>1/2 - (√3/2)i</li>
+            </ul>
+        </div>
+    </div>
 
-<div class="instructions">
-<strong>Instrucciones:</strong>
-<ul>
-<li>Ingresa un número complejo en cualquier forma.</li>
-<li>Las otras formas se calculan automáticamente.</li>
-<li>Los ángulos pueden ser: pi, pi/2, pi/4, pi/6, 2*pi, etc.</li>
-<li>Las raíces pueden ser: sqrt(2), sqrt(3), etc.</li>
-<li>Los valores decimales también funcionan.</li>
-</ul>
-</div>
+    <!-- EJEMPLOS INTERACTIVOS -->
+    <div class="examples">
+        <h3>💡 Ejemplos para probar (haz clic):</h3>
+        <div class="examples-grid">
+            <div class="example-item" onclick="loadExample(1)">1 + i</div>
+            <div class="example-item" onclick="loadExample(2)">√2 + √2i</div>
+            <div class="example-item" onclick="loadExample(3)">2(cos(π/3) + i sin(π/3))</div>
+            <div class="example-item" onclick="loadExample(4)">3e^(i*π/4)</div>
+            <div class="example-item" onclick="loadExample(5)">1/2 + (√3/2)i</div>
+        </div>
+    </div>
 
-<!-- ==================== CARTESIANA ==================== -->
-<div class="form-section">
-<h2>Forma Cartesiana: a + bi</h2>
+    <!-- SECCIONES DE CONVERSIÓN -->
+    <div class="conversion-sections">
+        <!-- Forma Cartesiana -->
+        <div class="section">
+            <h2>📐 Forma Cartesiana: a + bi</h2>
+            <div class="input-group">
+                <div class="input-field">
+                    <label>Parte Real (a)</label>
+                    <input type="text" id="real" placeholder="Ej: sqrt(2), 1.5, pi">
+                </div>
+                <span class="operator">+</span>
+                <div class="input-field">
+                    <label>Parte Imaginaria (b)</label>
+                    <input type="text" id="imag" placeholder="Ej: sqrt(3), -2.7, pi/2">
+                </div>
+                <span class="operator">i</span>
+            </div>
+            <div class="result" id="cartesian-result">
+                <span>Ingresa los valores para ver el resultado</span>
+            </div>
+        </div>
 
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="real" placeholder="a (ej: 2)">
-<span class="operator">+</span>
-<input type="text" id="imag" placeholder="b (ej: 3)">
-<span class="operator">i</span>
-</div>
+        <!-- Forma Polar -->
+        <div class="section">
+            <h2>🎯 Forma Polar: r(cos θ + i sin θ)</h2>
+            <div class="input-group">
+                <div class="input-field">
+                    <label>Módulo (r)</label>
+                    <input type="text" id="modulus" placeholder="Ej: √5, 2.5, 3">
+                </div>
+                <span class="operator">(cos</span>
+                <div class="input-field">
+                    <label>Ángulo (θ)</label>
+                    <input type="text" id="angle" placeholder="Ej: pi/3, 0.785, 45°">
+                </div>
+                <span class="operator">+ i sin</span>
+                <div class="input-field">
+                    <label>Ángulo (θ)</label>
+                    <input type="text" id="angle2" placeholder="Se sincroniza automáticamente" readonly>
+                </div>
+                <span class="operator">)</span>
+            </div>
+            <div class="result" id="polar-result">
+                <span>Ingresa los valores para ver el resultado</span>
+            </div>
+        </div>
 
-<div class="result" id="cartesian-result">Ingresa valores arriba</div>
-</div>
+        <!-- Forma Exponencial -->
+        <div class="section">
+            <h2>⚡ Forma Exponencial: re^(iθ)</h2>
+            <div class="input-group">
+                <div class="input-field">
+                    <label>Módulo (r)</label>
+                    <input type="text" id="exp-modulus" placeholder="Ej: √2, 4, 1.5">
+                </div>
+                <span class="operator">e^(i*</span>
+                <div class="input-field">
+                    <label>Ángulo (θ)</label>
+                    <input type="text" id="exp-angle" placeholder="Ej: pi/4, 1.047, 60°">
+                </div>
+                <span class="operator">)</span>
+            </div>
+            <div class="result" id="exponential-result">
+                <span>Ingresa los valores para ver el resultado</span>
+            </div>
+        </div>
+    </div>
 
-<!-- ==================== POLAR ==================== -->
-<div class="form-section">
-<h2>Forma Polar: r(cos θ + i sin θ)</h2>
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="button-group">
+        <button class="btn btn-danger" onclick="clearAll()">
+            <span>🗑️</span> Limpiar Todo
+        </button>
+        <button class="btn btn-primary" onclick="calculateAll()">
+            <span>🧮</span> Calcular Todas
+        </button>
+    </div>
 
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="modulus" placeholder="r">
-<span class="operator">(cos</span>
-<input type="text" id="angle" placeholder="θ">
-<span class="operator">+ i sin</span>
-<input type="text" id="angle2" readonly placeholder="θ">
-<span class="operator">)</span>
-</div>
-
-<div class="result" id="polar-result">Ingresa valores arriba</div>
-</div>
-
-<!-- ==================== EXPONENCIAL ==================== -->
-<div class="form-section">
-<h2>Forma Exponencial: re^(iθ)</h2>
-
-<div class="input-group">
-<label>z =</label>
-<input type="text" id="exp-modulus" placeholder="r">
-<span class="operator">e^(i·</span>
-<input type="text" id="exp-angle" placeholder="θ">
-<span class="operator">)</span>
-</div>
-
-<div class="result" id="exponential-result">Ingresa valores arriba</div>
-</div>
-
-<button class="clear-btn" onclick="clearAll()">Limpiar Todo</button>
-
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p><strong>Desarrollado por:</strong> Roberto Balmes Solís</p>
+                <p><strong>Materia:</strong> Fundamentos de Álgebra</p>
+                <p><strong>Tecnológico de Software</strong> • 1° Cuatrimestre 2025</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" onclick="showInfo()">ℹ️ Información</a>
+                <a href="#" onclick="showHelp()">❓ Ayuda</a>
+            </div>
+        </div>
+    </footer>
 </div>
 
 <script>
-/* ==================== TODA TU LÓGICA JS (SIN CAMBIOS) ==================== */
-/* → Copié exactamente lo que enviaste, solo corregí formato y espaciado */
-
+// ============================================================================
+// VARIABLES Y CONSTANTES
+// ============================================================================
 let isUpdating = false;
 
+// ============================================================================
+// FUNCIONES DE PARSEO Y FORMATO (MANTENIDAS)
+// ============================================================================
 function parseNumber(input) {
     if (!input && input !== 0) return 0;
+    
     const inputStr = input.toString().trim();
     if (!inputStr) return 0;
-
+    
     let expression = inputStr
         .replace(/sqrt\s*\(/gi, 'Math.sqrt(')
-        .replace(/pi\b/gi, 'Math.PI');
-
+        .replace(/pi\b/gi, 'Math.PI')
+        .replace(/°/g, '*Math.PI/180'); // Convertir grados a radianes
+    
     try {
         const result = Function('"use strict"; return (' + expression + ')')();
         if (isNaN(result) || !isFinite(result)) return 0;
         return result;
-    } catch {
+    } catch (error) {
         return 0;
     }
 }
-function parseAngle(input) { return parseNumber(input); }
+
+function parseAngle(input) {
+    return parseNumber(input);
+}
 
 function angleToPI(angle) {
     if (Math.abs(angle) < 1e-8) return "0";
-    const multiples = [
-        { value: Math.PI, text: "pi" },
-        { value: Math.PI/2, text: "pi/2" },
-        { value: Math.PI/3, text: "pi/3" },
-        { value: Math.PI/4, text: "pi/4" }
+    
+    const piMultiples = [
+        { value: Math.PI, text: "π" },
+        { value: Math.PI/2, text: "π/2" },
+        { value: Math.PI/3, text: "π/3" },
+        { value: Math.PI/4, text: "π/4" },
+        { value: Math.PI/6, text: "π/6" },
+        { value: 2*Math.PI, text: "2π" },
+        { value: 3*Math.PI/2, text: "3π/2" },
+        { value: 2*Math.PI/3, text: "2π/3" },
+        { value: 3*Math.PI/4, text: "3π/4" },
+        { value: 5*Math.PI/6, text: "5π/6" },
+        { value: 5*Math.PI/4, text: "5π/4" },
+        { value: 4*Math.PI/3, text: "4π/3" },
+        { value: 5*Math.PI/3, text: "5π/3" },
+        { value: 7*Math.PI/4, text: "7π/4" },
+        { value: -Math.PI, text: "-π" },
+        { value: -Math.PI/2, text: "-π/2" },
+        { value: -Math.PI/3, text: "-π/3" },
+        { value: -Math.PI/4, text: "-π/4" },
+        { value: -Math.PI/6, text: "-π/6" },
+        { value: -2*Math.PI, text: "-2π" },
+        { value: -3*Math.PI/2, text: "-3π/2" },
+        { value: -2*Math.PI/3, text: "-2π/3" },
+        { value: -3*Math.PI/4, text: "-3π/4" },
+        { value: -5*Math.PI/6, text: "-5π/6" }
     ];
-    for (let m of multiples) {
-        if (Math.abs(angle - m.value) < 1e-8) return m.text;
+
+    for (let pm of piMultiples) {
+        if (Math.abs(angle - pm.value) < 1e-8) {
+            return pm.text;
+        }
     }
+
+    const ratio = angle / Math.PI;
+    
+    if (Math.abs(ratio - Math.round(ratio)) < 1e-8) {
+        const intRatio = Math.round(ratio);
+        if (intRatio === 1) return "π";
+        if (intRatio === -1) return "-π";
+        if (intRatio === 0) return "0";
+        return intRatio + "π";
+    }
+
+    const denominators = [2, 3, 4, 6, 8, 12];
+    for (let den of denominators) {
+        const num = ratio * den;
+        if (Math.abs(num - Math.round(num)) < 1e-8) {
+            const intNum = Math.round(num);
+            if (intNum === 0) return "0";
+            if (den === 1) {
+                return intNum === 1 ? "π" : intNum === -1 ? "-π" : intNum + "π";
+            }
+            if (intNum === 1) return "π/" + den;
+            if (intNum === -1) return "-π/" + den;
+            return intNum + "π/" + den;
+        }
+    }
+
     return angle.toFixed(4);
 }
 
 function formatNumber(num) {
     if (Math.abs(num) < 1e-10) return "0";
-    if (Math.abs(num - Math.round(num)) < 1e-8) return Math.round(num).toString();
-    return num.toFixed(6);
+    
+    const sqrtValues = [
+        { value: Math.sqrt(2), text: "√2" },
+        { value: Math.sqrt(3), text: "√3" },
+        { value: Math.sqrt(5), text: "√5" },
+        { value: Math.sqrt(6), text: "√6" },
+        { value: Math.sqrt(7), text: "√7" },
+        { value: Math.sqrt(8), text: "2√2" },
+        { value: Math.sqrt(12), text: "2√3" },
+        { value: Math.sqrt(18), text: "3√2" },
+        { value: Math.sqrt(27), text: "3√3" },
+        { value: Math.sqrt(2)/2, text: "√2/2" },
+        { value: Math.sqrt(3)/2, text: "√3/2" },
+        { value: Math.sqrt(3)/3, text: "√3/3" },
+        { value: -Math.sqrt(2), text: "-√2" },
+        { value: -Math.sqrt(3), text: "-√3" },
+        { value: -Math.sqrt(2)/2, text: "-√2/2" },
+        { value: -Math.sqrt(3)/2, text: "-√3/2" },
+        { value: -Math.sqrt(3)/3, text: "-√3/3" }
+    ];
+
+    for (let sv of sqrtValues) {
+        if (Math.abs(num - sv.value) < 1e-8) {
+            return sv.text;
+        }
+    }
+
+    const fractions = [
+        { value: 1/2, text: "1/2" },
+        { value: 1/3, text: "1/3" },
+        { value: 2/3, text: "2/3" },
+        { value: 1/4, text: "1/4" },
+        { value: 3/4, text: "3/4" },
+        { value: 1/6, text: "1/6" },
+        { value: 5/6, text: "5/6" },
+        { value: 1/8, text: "1/8" },
+        { value: 3/8, text: "3/8" },
+        { value: 5/8, text: "5/8" },
+        { value: 7/8, text: "7/8" },
+        { value: -1/2, text: "-1/2" },
+        { value: -1/3, text: "-1/3" },
+        { value: -2/3, text: "-2/3" },
+        { value: -1/4, text: "-1/4" },
+        { value: -3/4, text: "-3/4" }
+    ];
+
+    for (let frac of fractions) {
+        if (Math.abs(num - frac.value) < 1e-8) {
+            return frac.text;
+        }
+    }
+
+    if (Math.abs(num - Math.round(num)) < 1e-8) {
+        return Math.round(num).toString();
+    }
+
+    return parseFloat(num.toFixed(4)).toString();
 }
 
-function normalizeAngle(a) {
-    while (a > Math.PI) a -= 2*Math.PI;
-    while (a <= -Math.PI) a += 2*Math.PI;
-    return a;
+// ============================================================================
+// FUNCIONES DE ACTUALIZACIÓN (MODIFICADAS)
+// ============================================================================
+function normalizeAngle(angle) {
+    while (angle > Math.PI) angle -= 2 * Math.PI;
+    while (angle <= -Math.PI) angle += 2 * Math.PI;
+    return angle;
 }
 
 function updateFromCartesian() {
     if (isUpdating) return;
     isUpdating = true;
 
-    const real = parseNumber(real.value);
-    const imag = parseNumber(imag.value);
+    highlightActive('real', 'imag');
+    
+    const real = parseNumber(document.getElementById('real').value) || 0;
+    const imag = parseNumber(document.getElementById('imag').value) || 0;
 
-    const modulus = Math.sqrt(real*real + imag*imag);
-    let angle = normalizeAngle(Math.atan2(imag, real));
+    const modulus = Math.sqrt(real * real + imag * imag);
+    let angle = Math.atan2(imag, real);
+    angle = normalizeAngle(angle);
 
-    const aText = angleToPI(angle);
+    const modulusFormatted = formatNumber(modulus);
+    const angleFormatted = angleToPI(angle);
+    
+    document.getElementById('modulus').value = modulusFormatted;
+    document.getElementById('angle').value = angleFormatted;
+    document.getElementById('angle2').value = angleFormatted;
 
-    modulusInput.value = formatNumber(modulus);
-    angleInput.value = aText;
-    angle2.value = aText;
-
-    expMod.value = formatNumber(modulus);
-    expAng.value = aText;
+    document.getElementById('exp-modulus').value = modulusFormatted;
+    document.getElementById('exp-angle').value = angleFormatted;
 
     updateResults(real, imag, modulus, angle);
     isUpdating = false;
@@ -289,20 +812,25 @@ function updateFromPolar() {
     if (isUpdating) return;
     isUpdating = true;
 
-    const modulus = parseNumber(modulusInput.value);
-    const angle = normalizeAngle(parseAngle(angleInput.value));
-    angle2.value = angleToPI(angle);
+    highlightActive('modulus', 'angle');
+    
+    const modulus = parseNumber(document.getElementById('modulus').value) || 0;
+    const angle = parseAngle(document.getElementById('angle').value) || 0;
+    const normalizedAngle = normalizeAngle(angle);
 
-    const realValue = modulus * Math.cos(angle);
-    const imagValue = modulus * Math.sin(angle);
+    const angleFormatted = angleToPI(normalizedAngle);
+    document.getElementById('angle2').value = angleFormatted;
 
-    real.value = formatNumber(realValue);
-    imag.value = formatNumber(imagValue);
+    const real = modulus * Math.cos(normalizedAngle);
+    const imag = modulus * Math.sin(normalizedAngle);
 
-    expMod.value = formatNumber(modulus);
-    expAng.value = angleToPI(angle);
+    document.getElementById('real').value = formatNumber(real);
+    document.getElementById('imag').value = formatNumber(imag);
 
-    updateResults(realValue, imagValue, modulus, angle);
+    document.getElementById('exp-modulus').value = formatNumber(modulus);
+    document.getElementById('exp-angle').value = angleFormatted;
+
+    updateResults(real, imag, modulus, normalizedAngle);
     isUpdating = false;
 }
 
@@ -310,68 +838,208 @@ function updateFromExponential() {
     if (isUpdating) return;
     isUpdating = true;
 
-    const modulus = parseNumber(expMod.value);
-    const angle = normalizeAngle(parseAngle(expAng.value));
+    highlightActive('exp-modulus', 'exp-angle');
+    
+    const modulus = parseNumber(document.getElementById('exp-modulus').value) || 0;
+    const angle = parseAngle(document.getElementById('exp-angle').value) || 0;
+    const normalizedAngle = normalizeAngle(angle);
 
-    const realValue = modulus * Math.cos(angle);
-    const imagValue = modulus * Math.sin(angle);
+    const real = modulus * Math.cos(normalizedAngle);
+    const imag = modulus * Math.sin(normalizedAngle);
 
-    real.value = formatNumber(realValue);
-    imag.value = formatNumber(imagValue);
+    document.getElementById('real').value = formatNumber(real);
+    document.getElementById('imag').value = formatNumber(imag);
 
-    modulusInput.value = formatNumber(modulus);
-    angleInput.value = angleToPI(angle);
-    angle2.value = angleToPI(angle);
+    const angleFormatted = angleToPI(normalizedAngle);
+    document.getElementById('modulus').value = formatNumber(modulus);
+    document.getElementById('angle').value = angleFormatted;
+    document.getElementById('angle2').value = angleFormatted;
 
-    updateResults(realValue, imagValue, modulus, angle);
+    updateResults(real, imag, modulus, normalizedAngle);
     isUpdating = false;
 }
 
 function updateResults(real, imag, modulus, angle) {
     const angleText = angleToPI(angle);
+    
+    // Resultado cartesiano
+    let cartesianText = "";
+    if (real !== 0 || imag !== 0) {
+        if (real !== 0) {
+            cartesianText += formatNumber(real);
+        }
+        if (imag > 0) {
+            cartesianText += (real !== 0 ? " + " : "");
+            if (imag === 1) {
+                cartesianText += "i";
+            } else {
+                cartesianText += formatNumber(imag) + "i";
+            }
+        } else if (imag < 0) {
+            cartesianText += " - ";
+            if (imag === -1) {
+                cartesianText += "i";
+            } else {
+                cartesianText += formatNumber(-imag) + "i";
+            }
+        }
+        if (cartesianText === "") cartesianText = "0";
+    } else {
+        cartesianText = "0";
+    }
+    document.getElementById('cartesian-result').innerHTML = 
+        `<strong>z =</strong> ${cartesianText}`;
 
-    let c = "";
-    if (real !== 0) c += formatNumber(real);
-    if (imag > 0) c += (real ? " + " : "") + formatNumber(imag) + "i";
-    if (imag < 0) c += (real ? " - " : "-") + formatNumber(-imag) + "i";
-    if (!c) c = "0";
-    cartesianResult.textContent = "z = " + c;
+    // Resultado polar
+    let polarText = "";
+    if (modulus !== 0) {
+        polarText = `${formatNumber(modulus)}(cos(${angleText}) + i sin(${angleText}))`;
+    } else {
+        polarText = "0";
+    }
+    document.getElementById('polar-result').innerHTML = 
+        `<strong>z =</strong> ${polarText}`;
 
-    polarResult.textContent = modulus === 0
-        ? "z = 0"
-        : `z = ${formatNumber(modulus)}(cos(${angleText}) + i sin(${angleText}))`;
+    // Resultado exponencial
+    let expText = "";
+    if (modulus !== 0) {
+        expText = `${formatNumber(modulus)}e^(i·${angleText})`;
+    } else {
+        expText = "0";
+    }
+    document.getElementById('exponential-result').innerHTML = 
+        `<strong>z =</strong> ${expText}`;
+}
 
-    exponentialResult.textContent = modulus === 0
-        ? "z = 0"
-        : `z = ${formatNumber(modulus)} e^(i·${angleText})`;
+// ============================================================================
+// FUNCIONES AUXILIARES MEJORADAS
+// ============================================================================
+function highlightActive(...inputIds) {
+    // Remover todas las clases active primero
+    document.querySelectorAll('.input-field').forEach(field => {
+        field.classList.remove('active');
+    });
+    
+    // Agregar clase active a los inputs activos
+    inputIds.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.parentElement.classList.add('active');
+        }
+    });
 }
 
 function clearAll() {
-    document.querySelectorAll("input").forEach(inp => inp.value = "");
-    document.querySelectorAll(".result").forEach(r => r.textContent = "Ingresa valores arriba");
+    if (confirm('¿Estás seguro de que deseas limpiar todos los campos?')) {
+        document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        document.querySelectorAll('.result').forEach(result => {
+            result.innerHTML = '<span>Ingresa los valores para ver el resultado</span>';
+        });
+        document.querySelectorAll('.input-field').forEach(field => {
+            field.classList.remove('active');
+        });
+    }
 }
 
-/* ==================== EVENTOS ==================== */
-const real = document.getElementById("real");
-const imag = document.getElementById("imag");
-const modulusInput = document.getElementById("modulus");
-const angleInput = document.getElementById("angle");
-const angle2 = document.getElementById("angle2");
-const expMod = document.getElementById("exp-modulus");
-const expAng = document.getElementById("exp-angle");
+function calculateAll() {
+    // Si hay valores en cartesiana, usarlos primero
+    const realInput = document.getElementById('real').value;
+    const imagInput = document.getElementById('imag').value;
+    
+    if (realInput || imagInput) {
+        updateFromCartesian();
+    } else {
+        // Si no hay valores, mostrar mensaje
+        alert('Por favor, ingresa valores en alguna de las formas para calcular.');
+    }
+}
 
-const cartesianResult = document.getElementById("cartesian-result");
-const polarResult = document.getElementById("polar-result");
-const exponentialResult = document.getElementById("exponential-result");
+function loadExample(num) {
+    const examples = [
+        { real: '1', imag: '1' },
+        { real: 'sqrt(2)', imag: 'sqrt(2)' },
+        { modulus: '2', angle: 'pi/3' },
+        { expModulus: '3', expAngle: 'pi/4' },
+        { real: '1/2', imag: 'sqrt(3)/2' }
+    ];
+    
+    const example = examples[num - 1];
+    
+    if (example.real) {
+        document.getElementById('real').value = example.real;
+        document.getElementById('imag').value = example.imag;
+        updateFromCartesian();
+    } else if (example.modulus) {
+        document.getElementById('modulus').value = example.modulus;
+        document.getElementById('angle').value = example.angle;
+        updateFromPolar();
+    } else if (example.expModulus) {
+        document.getElementById('exp-modulus').value = example.expModulus;
+        document.getElementById('exp-angle').value = example.expAngle;
+        updateFromExponential();
+    }
+}
 
-real.addEventListener("input", updateFromCartesian);
-imag.addEventListener("input", updateFromCartesian);
-modulusInput.addEventListener("input", updateFromPolar);
-angleInput.addEventListener("input", updateFromPolar);
-expMod.addEventListener("input", updateFromExponential);
-expAng.addEventListener("input", updateFromExponential);
+function showInfo() {
+    alert('Calculadora de Números Complejos\n\n' +
+          'Esta herramienta permite convertir números complejos entre sus diferentes representaciones:\n' +
+          '• Forma Cartesiana (a + bi)\n' +
+          '• Forma Polar (r(cos θ + i sin θ))\n' +
+          '• Forma Exponencial (re^(iθ))\n\n' +
+          'Desarrollada por Roberto Balmes Solís\n' +
+          'Tecnológico de Software - 2025');
+}
 
+function showHelp() {
+    alert('📚 Ayuda de uso:\n\n' +
+          '1. Ingresa valores en CUALQUIERA de las tres formas\n' +
+          '2. Las otras formas se calcularán automáticamente\n\n' +
+          '📝 Notación soportada:\n' +
+          '• sqrt(n) - Raíz cuadrada\n' +
+          '• pi - Constante π\n' +
+          '• a/b - Fracciones\n' +
+          '• ° - Grados (ej: 45°)\n' +
+          '• Operaciones: +, -, *, /\n\n' +
+          '💡 Consejo: Usa los ejemplos para empezar rápido!');
+}
+
+// ============================================================================
+// INICIALIZACIÓN
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Event listeners con mejor feedback visual
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('active');
+        });
+        
+        input.addEventListener('blur', function() {
+            setTimeout(() => {
+                this.parentElement.classList.remove('active');
+            }, 200);
+        });
+    });
+
+    // Event listeners principales
+    document.getElementById('real').addEventListener('input', updateFromCartesian);
+    document.getElementById('imag').addEventListener('input', updateFromCartesian);
+    document.getElementById('modulus').addEventListener('input', updateFromPolar);
+    document.getElementById('angle').addEventListener('input', function() {
+        document.getElementById('angle2').value = this.value;
+        updateFromPolar();
+    });
+    document.getElementById('exp-modulus').addEventListener('input', updateFromExponential);
+    document.getElementById('exp-angle').addEventListener('input', updateFromExponential);
+
+    // Event listeners para Enter
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateAll();
+            }
+        });
+    });
+});
 </script>
-
 </body>
 </html>
