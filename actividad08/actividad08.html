@@ -1,12 +1,12 @@
-<!-- Estructura básica del documento HTML -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividad 8 Calculadora</title>
+
 <style>
-    /* Reset y configuración base */
+/* Reset y configuración base */
 * {
     margin: 0;
     padding: 0;
@@ -15,8 +15,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #ff0e0e; /* Negro */
-    color: #000000; /* Blanco */
+    background-color: #ff0e0e;
+    color: #000000;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -35,7 +35,7 @@ h1 {
     text-align: center;
     font-size: 2.5rem;
     font-weight: 300;
-    color: #429c42; /* Azul */
+    color: #429c42;
     margin-bottom: 3rem;
 }
 
@@ -52,7 +52,7 @@ label {
     display: block;
     font-size: 1.1rem;
     font-weight: 500;
-    color: #4e94bd; /* Blanco */
+    color: #4e94bd;
     margin-bottom: 0.5rem;
 }
 
@@ -62,9 +62,9 @@ textarea {
     min-height: 100px;
     padding: 1rem;
     background-color: #28cf232c;
-    border: 2px solid #4897c92d; /* Azul */
+    border: 2px solid #4897c92d;
     border-radius: 8px;
-    color: #d4c602; /* Blanco */
+    color: #d4c602;
     font-size: 1rem;
     font-family: 'Courier New', monospace;
     resize: vertical;
@@ -73,19 +73,19 @@ textarea {
 
 textarea:focus {
     outline: none;
-    border-color: #1e3d6d; /* Amarillo */
+    border-color: #1e3d6d;
 }
 
 textarea::placeholder {
     color: #8f6f6f;
 }
 
-/* Botón de calcular */
+/* Botón */
 .calculate-button {
     width: 100%;
     padding: 1rem;
-    background-color: #000000; /* Azul */
-    color: #966161; /* Blanco */
+    background-color: #000000;
+    color: #966161;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -103,21 +103,21 @@ textarea::placeholder {
     transform: translateY(0);
 }
 
-/* Sección de resultados */
+/* Resultados */
 .result-section {
     margin-top: 2rem;
 }
 
 .info-card {
     background-color: #511361;
-    border: 2px solid #fbbe2480; /* Amarillo */
+    border: 2px solid #fbbe2480;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 .info-card h3 {
-    color: #0c2507; /* Amarillo */
+    color: #0c2507;
     font-size: 1.3rem;
     margin-bottom: 1rem;
     font-weight: 600;
@@ -127,261 +127,136 @@ textarea::placeholder {
     font-family: 'Courier New', monospace;
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #ffffff; /* Blanco */
+    color: #ffffff;
     background-color: #1a1a1a;
     padding: 1rem;
     border-radius: 6px;
-    border-left: 4px solid #fbbf24; /* Amarillo */
+    border-left: 4px solid #fbbf24;
     min-height: 60px;
     display: flex;
     align-items: center;
 }
 
-/* Media queries para responsive */
 @media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    textarea {
-        min-height: 80px;
-        font-size: 0.9rem;
-    }
+    .container { padding: 1rem; }
+    h1 { font-size: 2rem; }
+    textarea { min-height: 80px; font-size: 0.9rem; }
 }
 </style>
+
 </head>
 <body>
-    <!-- Estructura básica del documento HTML -->
+
 <div class="container">
-        <h1>Calculadora de Variables</h1>
+    <h1>Calculadora de Variables</h1>
 
-        <div class="input-section">
-            <div class="field-group">
-                <label for="variables">Variables:</label>
-                <textarea id="variables" placeholder="Ejemplo: feature_cost, w1 = 1, w2 = 2, w3 = 3"></textarea>
-            </div>
-
-            <div class="field-group">
-                <label for="equations">Ecuaciones:</label>
-                <textarea id="equations" placeholder="Ejemplo: feature_cost = w1 * w2 + w3"></textarea>
-            </div>
-
-            <button id="calculate-btn" class="calculate-button">Calcular</button>
+    <div class="input-section">
+        <div class="field-group">
+            <label for="variables">Variables:</label>
+            <textarea id="variables" placeholder="Ejemplo: w1 = 1, w2 = 2, w3 = 3"></textarea>
         </div>
 
-        <div class="result-section">
-            <div class="info-card">
-                <h3>Resultado:</h3>
-                <div id="result" class="result-content">
-                    Ingresa las variables y ecuaciones para ver el resultado
-                </div>
+        <div class="field-group">
+            <label for="equations">Ecuaciones:</label>
+            <textarea id="equations" placeholder="Ejemplo: feature_cost = w1 * w2 + w3"></textarea>
+        </div>
+
+        <button id="calculate-btn" class="calculate-button">Calcular</button>
+    </div>
+
+    <div class="result-section">
+        <div class="info-card">
+            <h3>Resultado:</h3>
+            <div id="result" class="result-content">
+                Ingresa las variables y ecuaciones para ver el resultado
             </div>
         </div>
     </div>
-<div class="container">
-        <h1>Calculadora de Variables</h1>
+</div>
 
-        <div class="input-section">
-            <div class="field-group">
-                <label for="variables">Variables:</label>
-                <textarea id="variables" placeholder="Ejemplo: feature_cost, w1 = 1, w2 = 2, w3 = 3"></textarea>
-            </div>
-
-            <div class="field-group">
-                <label for="equations">Ecuaciones:</label>
-                <textarea id="equations" placeholder="Ejemplo: feature_cost = w1 * w2 + w3"></textarea>
-            </div>
-
-            <button id="calculate-btn" class="calculate-button">Calcular</button>
-        </div>
-
-        <div class="result-section">
-            <div class="info-card">
-                <h3>Resultado:</h3>
-                <div id="result" class="result-content">
-                    Ingresa las variables y ecuaciones para ver el resultado
-                </div>
-            </div>
-        </div>
-    </div>
 <script>
-    // Clase principal de la calculadora
+// Clase principal de la calculadora
 class Calculator {
     constructor() {
         this.variablesInput = document.getElementById('variables');
         this.equationsInput = document.getElementById('equations');
         this.calculateButton = document.getElementById('calculate-btn');
         this.resultDiv = document.getElementById('result');
-        
         this.init();
     }
-    
-    // Inicializar eventos
+
     init() {
         this.calculateButton.addEventListener('click', () => this.calculate());
-        
-        // También permitir calcular con Ctrl+Enter en los campos
-        this.variablesInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                this.calculate();
-            }
-        });
-        
-        this.equationsInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                this.calculate();
-            }
-        });
     }
-    
-    // Parsear las variables del campo de texto
-    parseVariables(variablesText) {
+
+    parseVariables(text) {
         const variables = {};
-        const lines = variablesText.split('\n').filter(line => line.trim());
-        
+        const lines = text.split('\n').filter(l => l.trim());
+
         for (const line of lines) {
-            const trimmedLine = line.trim();
-            if (!trimmedLine) continue;
-            
-            // Separar por comas para manejar múltiples declaraciones en una línea
-            const parts = trimmedLine.split(',');
-            
+            const parts = line.split(',');
+
             for (const part of parts) {
-                const trimmedPart = part.trim();
-                if (!trimmedPart) continue;
-                
-                // Buscar asignaciones como "w1 = 1" o "variable = valor"
-                const assignmentMatch = trimmedPart.match(/^(\w+)\s*=\s*(.+)$/);
-                if (assignmentMatch) {
-                    const [, varName, value] = assignmentMatch;
-                    try {
-                        // Intentar evaluar el valor (puede ser numérico o una expresión)
-                        variables[varName.trim()] = this.evaluateExpression(value.trim(), variables);
-                    } catch (error) {
-                        throw new Error(`Error "${varName}": ${error.message}`);
-                    }
-                } else {
-                    // Si no hay asignación, asumir que es solo el nombre de la variable
-                    const varName = trimmedPart.trim();
-                    if (varName && !variables.hasOwnProperty(varName)) {
-                        variables[varName] = 0; // Valor por defecto
-                    }
+                const match = part.trim().match(/^(\w+)\s*=\s*(.+)$/);
+
+                if (match) {
+                    const [, name, value] = match;
+                    variables[name] = this.evaluateExpression(value, variables);
                 }
             }
         }
-        
         return variables;
     }
-    
-    // Evaluar expresiones matemáticas
+
     evaluateExpression(expression, variables) {
-        // Primero validar que la expresión original solo contenga caracteres seguros
-        // Permitimos: letras, números, operadores (+, -, *, /, ^), paréntesis, puntos, espacios
-        if (!/^[a-zA-Z0-9+\-*/().\s^]+$/.test(expression)) {
-            throw new Error(`Expresión contiene caracteres no válidos: ${expression}`);
+        if (!/^[a-zA-Z0-9+\-*/().\s^]+$/.test(expression))
+            throw new Error(`Caracteres no válidos: ${expression}`);
+
+        let exp = expression.replace(/\^/g, '**');
+
+        for (const [name, value] of Object.entries(variables)) {
+            exp = exp.replace(new RegExp(`\\b${name}\\b`, "g"), value);
         }
-        
-        // Convertir ^ a ** para potencias (JavaScript usa ** en lugar de ^)
-        let processedExpression = expression.replace(/\^/g, '**');
-        
-        // Reemplazar variables conocidas en la expresión
-        for (const [varName, value] of Object.entries(variables)) {
-            const regex = new RegExp(`\\b${varName}\\b`, 'g');
-            processedExpression = processedExpression.replace(regex, value);
-        }
-        
-        // Verificar que no queden variables sin resolver (letras)
-        if (/[a-zA-Z]/.test(processedExpression)) {
-            const undefinedVars = processedExpression.match(/[a-zA-Z]+/g);
-            throw new Error(`Variables sin definir: ${undefinedVars.join(', ')}`);
-        }
-        
-        try {
-            return Function(`"use strict"; return (${processedExpression})`)();
-        } catch (error) {
-            throw new Error(`Error al evaluar: ${processedExpression}`);
-        }
+
+        if (/[a-zA-Z]/.test(exp))
+            throw new Error(`Variable no definida: ${exp}`);
+
+        return Function(`"use strict"; return (${exp})`)();
     }
-    
-    // Función principal de cálculo
+
     calculate() {
         try {
-            const variablesText = this.variablesInput.value.trim();
-            const equationsText = this.equationsInput.value.trim();
-            
-            if (!variablesText && !equationsText) {
-                this.showResult('Por favor ingresa las variables y ecuaciones', 'error');
-                return;
-            }
-            
-            // Parsear variables
-            const variables = this.parseVariables(variablesText);
-            
-            // Procesar ecuaciones
-            const equations = equationsText.split('\n').filter(line => line.trim());
+            const vars = this.parseVariables(this.variablesInput.value);
+            const equations = this.equationsInput.value.split("\n").filter(l => l.trim());
+
             const results = [];
-            
-            for (const equation of equations) {
-                const trimmedEquation = equation.trim();
-                if (!trimmedEquation) continue;
-                
-                // Buscar ecuaciones como "result = expression"
-                const equationMatch = trimmedEquation.match(/^(\w+)\s*=\s*(.+)$/);
-                if (equationMatch) {
-                    const [, resultVar, expression] = equationMatch;
-                    
-                    try {
-                        const result = this.evaluateExpression(expression, variables);
-                        variables[resultVar] = result;
-                        results.push(`${resultVar} = ${result}`);
-                    } catch (error) {
-                        throw new Error(`Error en ecuación "${trimmedEquation}": ${error.message}`);
-                    }
-                } else {
-                    // Si no es una asignación, evaluar como expresión directa
-                    try {
-                        const result = this.evaluateExpression(trimmedEquation, variables);
-                        results.push(`${trimmedEquation} = ${result}`);
-                    } catch (error) {
-                        throw new Error(`Error al evaluar "${trimmedEquation}": ${error.message}`);
-                    }
+
+            for (const eq of equations) {
+                const match = eq.match(/^(\w+)\s*=\s*(.+)$/);
+
+                if (match) {
+                    const [, name, exp] = match;
+                    const res = this.evaluateExpression(exp, vars);
+                    vars[name] = res;
+                    results.push(`${name} = ${res}`);
                 }
             }
-            
-            if (results.length === 0) {
-                this.showResult('No se encontraron ecuaciones válidas para calcular', 'warning');
-            } else {
-                this.showResult(results.join('\n'), 'success');
-            }
-            
-        } catch (error) {
-            this.showResult(`Error: ${error.message}`, 'error');
+
+            this.showResult(results.join("\n") || "No hay ecuaciones válidas");
+
+        } catch (err) {
+            this.showResult("Error: " + err.message);
         }
     }
-    
-    // Mostrar resultados en la interfaz
-    showResult(message, type = 'success') {
-        this.resultDiv.textContent = message;
-        
-        // Remover clases anteriores
-        this.resultDiv.classList.remove('result-success', 'result-error', 'result-warning');
-        
-        // Agregar clase según el tipo
-        if (type !== 'success') {
-            this.resultDiv.classList.add(`result-${type}`);
-        }
+
+    showResult(msg) {
+        this.resultDiv.textContent = msg;
     }
 }
 
-// Inicializar la calculadora cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    new Calculator();
-});
+// Inicializar
+new Calculator();
 </script>
+
 </body>
 </html>
